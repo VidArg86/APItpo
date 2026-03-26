@@ -20,17 +20,13 @@ public class Usuario {
     private Long id;
 
     @Column(nullable = false)
-    private String nombre;
+    private String nombreUsuario;
     
     @Column(unique = true, nullable = false)
     private String email;
-    
-    private int DNI;
-
-    private String numeroTelefonico;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String contrasenia;
+    private String contraseña;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String salt;

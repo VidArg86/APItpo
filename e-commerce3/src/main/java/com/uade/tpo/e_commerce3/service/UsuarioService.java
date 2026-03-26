@@ -31,7 +31,7 @@ public class UsuarioService {
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
         throw new RuntimeException("El email ya está registrado.");
         }
-        usuario.setContrasenia(generateSecureHash(usuario.getContrasenia(), usuario.getSalt()));
+        usuario.setContraseña(generateSecureHash(usuario.getContraseña(), usuario.getSalt()));
         return usuarioRepository.save(usuario);
     }
     // Read
@@ -41,14 +41,11 @@ public class UsuarioService {
     // Update
     public Usuario updateUsuario(Long id, Usuario updatedData) {
     return usuarioRepository.findById(id).map(usuario -> {
-        usuario.setNombre(updatedData.getNombre());
+        usuario.setNombreUsuario(updatedData.getNombreUsuario());
         usuario.setEmail(updatedData.getEmail());
-        usuario.setDNI(updatedData.getDNI());
-        usuario.setNumeroTelefonico(updatedData.getNumeroTelefonico());
-
         // Update password ONLY if a new one is provided
-        if (updatedData.getContrasenia() != null && !updatedData.getContrasenia().isEmpty()) {
-            usuario.setContrasenia(generateSecureHash(updatedData.getContrasenia(), usuario.getSalt()));
+        if (updatedData.getContraseña() != null && !updatedData.getContraseña().isEmpty()) {
+            usuario.setContraseña(generateSecureHash(updatedData.getContraseña(), usuario.getSalt()));
         }
 
         return usuarioRepository.save(usuario);
@@ -83,7 +80,7 @@ public class UsuarioService {
         Usuario user = usuarioRepository.findByEmail(email)
         .orElseThrow(() -> new RuntimeException("User not found"));
         
-        String storedHash = user.getContrasenia();
+        String storedHash = user.getContraseña();
         String salt = user.getSalt();
         
         // The "Fun Flag"
