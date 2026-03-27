@@ -8,7 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -27,6 +28,7 @@ public class Carrito {
     @Column(nullable = false)
     private Double precioTotal;
 
-    @ManyToMany // Or @OneToMany depending on your requirements
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id") // This column will be created in the Producto table
     private List<Producto> productos = new ArrayList<>();
 }
