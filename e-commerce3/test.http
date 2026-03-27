@@ -43,6 +43,7 @@ Content-Type: application/json
 {
     "nombre": "Monitor LG UltraWide",
     "descripcion": "Actualizado: 34 pulgadas, curvo"
+    image
 }
 
 ###
