@@ -23,9 +23,11 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
     // Para Windows (PowerShell o CMD)
     .\mvnw.cmd spring-boot:run windows
 
-3. Alternativamente, puedes usar la extensión de Spring Boot en VS Code haciendo clic en el icono generado en la barra lateral.
+3. Alternativamente, puedes usar la extensión de Spring Boot en VS Code haciendo clic en el icono generado en la barra lateral.}
 
-Tablas de comunicacion con BD
+---
+
+## Tablas de comunicacion con BD
 ### Endpoints de la API (Productos)
 
 | Método | Endpoint | Descripción | Cuerpo / Parámetros | Estado Exitoso |
