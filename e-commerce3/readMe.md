@@ -17,9 +17,10 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 ## Cómo ejecutar el proyecto
 
 1. Asegúrate de tener instalado Java 17 y Maven.
-2. Ejecuta el siguiente comando en la terminal:
+2. Entra en la carpeta e-commerce3 y ejecuta el siguiente comando en la terminal:
 
-    ./mvnw spring-boot:run 
+    ./mvnw spring-boot:run linux
+    .\mvnw.cmd spring-boot:run windows
 
 3. Alternativamente, puedes usar la extensión de Spring Boot en VS Code haciendo clic en el icono generado en la barra lateral.
 

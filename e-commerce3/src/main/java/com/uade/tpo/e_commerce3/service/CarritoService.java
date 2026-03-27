@@ -1,14 +1,16 @@
 package com.uade.tpo.e_commerce3.service;
 
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.e_commerce3.model.Carrito;
 import com.uade.tpo.e_commerce3.model.Producto;
-
+import com.uade.tpo.e_commerce3.repository.CarritoRepository;
+import com.uade.tpo.e_commerce3.repository.ProductoRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -94,5 +96,4 @@ public class CarritoService {
                 .sum();
         carrito.setPrecioTotal(total);
     }
-}
 }
