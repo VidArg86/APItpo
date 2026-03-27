@@ -29,5 +29,5 @@ public class Carrito {
     private Double precioTotal;
 
     @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemCarrito> items = new ArrayList<>();
+    private List<ItemCarrito> productos = new ArrayList<>();
 }

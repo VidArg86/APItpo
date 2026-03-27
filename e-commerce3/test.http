@@ -43,7 +43,7 @@ Content-Type: application/json
 {
     "nombre": "Monitor LG UltraWide",
     "descripcion": "Actualizado: 34 pulgadas, curvo"
-    image
+
 }
 
 ###
@@ -90,7 +90,8 @@ Content-Type: application/json
 
 {
     "email": "test@example.com",
-    "password": "sdahsfhasuf5#"
+    "contrasenia": "sdahsfhasuf5#x"
+
 }
 ###
 ### DELETE USUARIO

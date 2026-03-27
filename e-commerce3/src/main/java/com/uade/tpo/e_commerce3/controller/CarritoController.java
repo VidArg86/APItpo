@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.e_commerce3.model.Carrito;
@@ -45,9 +46,9 @@ public class CarritoController {
     // 4. Add a product to a cart
     // Path example: POST /api/carritos/1/productos/5
     @PostMapping("/{carritoId}/productos/{productoId}")
-    public ResponseEntity<Carrito> addProducto(@PathVariable Long carritoId, @PathVariable Long productoId) {
+    public ResponseEntity<Carrito> addProducto(@PathVariable Long carritoId, @PathVariable Long productoId,@RequestParam(defaultValue = "1") int cantidad) {
         try {
-            return ResponseEntity.ok(carritoService.addProductoToCarrito(carritoId, productoId));
+            return ResponseEntity.ok(carritoService.addProductoToCarrito(carritoId, productoId, cantidad));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
