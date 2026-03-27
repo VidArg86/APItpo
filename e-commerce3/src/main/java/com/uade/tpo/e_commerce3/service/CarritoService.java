@@ -22,7 +22,7 @@ public class CarritoService {
     private CarritoRepository carritoRepository;
 
     @Autowired
-    private ProductoRepository productoRepository; // Assuming you have a Producto repository
+    private ProductoRepository productoRepository;
 
     // --- BASIC CRUD ---
 

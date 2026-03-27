@@ -18,11 +18,23 @@ Content-Type: application/json
 
 {
     "nombre": "Monitor LG",
-    "descripcion": "70 pulgadas, PLASMA, 144hz"
+    "descripcion": "70 pulgadas, PLASMA, 144hz",
+    "precio": 200.21,
+    "stock":20
 }
 
 ###
+###
+POST http://localhost:8080/api/productos
+Content-Type: application/json
 
+{
+    "nombre": "Monitor LG",
+    "descripcion": "55 pulgadas, LED , 144hz",
+    "precio": 150.21,
+    "stock":20
+}
+###
 ### 3. UPDATE AN EXISTING PRODUCTO (PUT)
 # Replace the '1' at the end with the actual ID from your H2 database
 PUT http://localhost:8080/api/productos/2
@@ -54,10 +66,8 @@ POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
 {
-    "nombre": "Juan Perez",
-    "DNI": 12345678,
+    "nombreUsuario": "Juan Perez",
     "email": "test@example.com",
-    "numeroTelefonico": "1122334455",
     "contrasenia": "sdahsfhasuf5#"
 }
 
@@ -85,3 +95,52 @@ Content-Type: application/json
 ### DELETE USUARIO
 DELETE http://localhost:8080/api/usuarios/1
 ###
+
+### Configuration
+@baseUrl = http://localhost:8080/api/carritos
+@contentType = application/json
+
+### 1. Get all carts
+# Calls carritoService.findAll()
+GET {{baseUrl}}
+Accept: {{contentType}}
+
+###
+
+### 2. Get a specific cart by ID
+# Calls carritoService.findById(id)
+GET {{baseUrl}}/1
+Accept: {{contentType}}
+
+###
+
+### 3. Create a new cart (Initial setup)
+# Calls carritoService.create(carrito)
+POST {{baseUrl}}
+Content-Type: {{contentType}}
+
+{
+    "nombreUsuario": "Juan Perez",
+    "precioTotal": 0.0,
+    "productos": []
+}
+
+###
+
+### 4. Add a product to a cart
+# Path: /api/carritos/{carritoId}/productos/{productoId}
+# Calls carritoService.addProductoToCarrito, which recalculates the total price.
+POST {{baseUrl}}/1/productos/3
+
+###
+
+### 5. Remove a product from a cart
+# Path: /api/carritos/{carritoId}/productos/{productoId}
+# Calls carritoService.removeProductoFromCarrito and updates total price.
+DELETE {{baseUrl}}/1/productos/2
+
+###
+
+### 6. Delete the entire cart
+# Calls carritoService.delete(id)
+DELETE {{baseUrl}}/1
