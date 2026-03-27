@@ -76,7 +76,7 @@ PUT http://localhost:8080/api/usuarios/1
 Content-Type: application/json
 
 {
-    "nombre": "Juan Perez Actualizado",
+    "nombre": "Edward Von Richtoffen",
     "email": "test2@example.com",
     "DNI": 12345678,
     "numeroTelefonico": "9988776655",
@@ -144,3 +144,6 @@ DELETE {{baseUrl}}/1/productos/2
 ### 6. Delete the entire cart
 # Calls carritoService.delete(id)
 DELETE {{baseUrl}}/1
+
+
+docker run --name mysql-uade-BDD2 -e MYSQL_ROOT_PASSWORD=vampireKilla -e MYSQL_DATABASE=e-commerce3 -p 3306:3306 -v mysql_ecommerce_data:/var/lib/mysql --restart unless-stopped -d mysql:8.0
