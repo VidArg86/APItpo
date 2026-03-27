@@ -1,73 +1,29 @@
-This was tested using REST client by Huachao Mao
+# Arquitectura del Back-End (Spring Boot)
 
-Using the following Scripts
+Este proyecto sigue la estructura estándar de capas de Spring Boot para mantener el código organizado y escalable:
 
+* **Model / Entity:** Representa la estructura de los datos y su mapeo con las tablas de la base de datos. Es la base de los objetos con los que trabajamos.
+* **Repository:** La capa de acceso a datos. Se encarga de la comunicación directa con la base de datos (operaciones CRUD).
+* **Service:** Aquí reside la lógica de negocio. Es el "cerebro" que procesa la información antes de guardarla o enviarla al cliente.
+* **Controller:** El punto de entrada de la aplicación. Se encarga de administrar los endpoints (REST API), recibir las peticiones HTTP y devolver las respuestas.
 
---------------------------------------------------------
+---
 
-Productos
+## Herramientas de Prueba
 
-### 1. GET ALL PRODUCTOS
-GET http://localhost:8080/api/productos
+El proyecto fue testeado utilizando la extensión REST Client de Huachao Mao (VS Code). 
+Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pruebas de forma rápida.
 
-###
+## Cómo ejecutar el proyecto
 
-### 2. CREATE A NEW PRODUCTO (POST)
-POST http://localhost:8080/api/productos
-Content-Type: application/json
+1. Asegúrate de tener instalado Java 17 y Maven.
+2. Ejecuta el siguiente comando en la terminal:
 
-{
-    "nombre": "Monitor LG",
-    "descripcion": "70 pulgadas, PLASMA, 144hz"
-}
+    ./mvnw spring-boot:run 
 
-###
-
-### 3. UPDATE AN EXISTING PRODUCTO (PUT)
-# Replace the '1' at the end with the actual ID from your H2 database
-PUT http://localhost:8080/api/productos/1
-Content-Type: application/json
-
-{
-    "nombre": "Monitor LG UltraWide",
-    "descripcion": "Actualizado: 34 pulgadas, curvo"
-}
-
-###
-
-### 4. DELETE A PRODUCTO (DELETE)
-# Replace the '1' with the ID you want to destroy
-DELETE http://localhost:8080/api/productos/1
+3. Alternativamente, puedes usar la extensión de Spring Boot en VS Code haciendo clic en el icono generado en la barra lateral.
 
 
+## Créditos
 
-
----------------------------------------
-
-Usuarios
-
-### GET ALL USUARIOS
-GET http://localhost:8080/api/usuarios
-
-### CREATE USUARIO
-POST http://localhost:8080/api/usuarios
-Content-Type: application/json
-
-{
-    "nombre": "Juan Perez",
-    "DNI": 12345678,
-    "numeroTelefonico": "1122334455"
-}
-
-### UPDATE USUARIO
-PUT http://localhost:8080/api/usuarios/1
-Content-Type: application/json
-
-{
-    "nombre": "Juan Perez Actualizado",
-    "DNI": 12345678,
-    "numeroTelefonico": "9988776655"
-}
-
-### DELETE USUARIO
-DELETE http://localhost:8080/api/usuarios/1
+Agradecimientos a Huachao Mao por su extensión para el testeo de los endpoints.
