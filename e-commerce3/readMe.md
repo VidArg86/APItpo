@@ -2,6 +2,14 @@
 
 Este proyecto sigue la estructura estándar de capas de Spring Boot para mantener el código organizado y escalable:
 
+src/
+ └── main/
+     └── java/com/uade/tpo/e_commerce3/
+         ├── controller/
+         ├── service/
+         ├── repository/
+         └── model/
+
 * **Model / Entity:** Representa la estructura de los datos y su mapeo con las tablas de la base de datos. Es la base de los objetos con los que trabajamos.
 * **Repository:** La capa de acceso a datos. Se encarga de la comunicación directa con la base de datos (operaciones CRUD).
 * **Service:** Aquí reside la lógica de negocio. Es el "cerebro" que procesa la información antes de guardarla o enviarla al cliente.
