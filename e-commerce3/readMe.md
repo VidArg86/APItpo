@@ -18,13 +18,44 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 
 1. Asegúrate de tener instalado Java 17 y Maven.
 2. Entra en la carpeta e-commerce3 y ejecuta el siguiente comando en la terminal:
-
-    ./mvnw spring-boot:run linux
+    // Para Linux / macOS
+    ./mvnw spring-boot:run 
+    // Para Windows (PowerShell o CMD)
     .\mvnw.cmd spring-boot:run windows
 
 3. Alternativamente, puedes usar la extensión de Spring Boot en VS Code haciendo clic en el icono generado en la barra lateral.
 
+Tablas de comunicacion con BD
+### Endpoints de la API (Productos)
+
+| Método | Endpoint | Descripción | Cuerpo / Parámetros | Estado Exitoso |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/productos` | Obtiene la lista de todos los productos. | Ninguno | `200 OK` |
+| `POST` | `/api/productos` | Crea un nuevo producto. | `JSON (Producto)` | `201 Created` |
+| `PUT` | `/api/productos/{id}` | Actualiza un producto existente. | `ID` + `JSON (Datos)` | `200 OK` |
+| `DELETE` | `/api/productos/{id}` | Elimina un producto por su ID. | `ID` | `204 No Content` |
+
+---
+### Endpoints de la API (Usuarios & Auth)
+
+| Método | Endpoint | Descripción | Cuerpo (JSON) | Respuestas HTTP |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/usuarios` | Lista todos los usuarios. | Ninguno | `200 OK` |
+| `POST` | `/api/usuarios` | Registra un nuevo usuario. | `Usuario` | `201 Created`, `409 Conflict` |
+| `PUT` | `/api/usuarios/{id}` | Actualiza datos de un usuario. | `Usuario` | `200 OK`, `404 Not Found` |
+| `DELETE` | `/api/usuarios/{id}`| Elimina un usuario por ID. | Ninguno | `204 No Content` |
+| `POST` | `/api/usuarios/login`| Autenticación de usuario. | `LoginRequest` | `200 OK`, `401 Unauthorized` |
+---
+### Endpoints de la API (Carrito de Compras)
+
+| Método | Endpoint | Descripción | Parámetros de Ruta | Estado Exitoso |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/carritos` | Lista todos los carritos del sistema. | Ninguno | `200 OK` |
+| `GET` | `/api/carritos/{id}` | Obtiene el detalle de un carrito específico. | `id` (Carrito) | `200 OK` |
+| `POST` | `/api/carritos` | Inicializa un nuevo carrito. | Ninguno | `201 Created` |
+| `POST` | `/api/carritos/{cId}/productos/{pId}` | Agrega un producto al carrito. | `cId`, `pId` | `200 OK` |
+| `DELETE` | `/api/carritos/{cId}/productos/{pId}` | Quita un producto del carrito. | `cId`, `pId` | `200 OK` |
+| `DELETE` | `/api/carritos/{id}` | Elimina el carrito por completo. | `id` (Carrito) | `204 No Content` |
 
 ## Créditos
-
 Agradecimientos a Huachao Mao por su extensión para el testeo de los endpoints.
