@@ -60,4 +60,12 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 | `DELETE` | `/api/carritos/{id}` | Elimina el carrito por completo. | `id` (Carrito) | `204 No Content` |
 
 ## Créditos
-Agradecimientos a Huachao Mao por su extensión para el testeo de los endpoints.
+
+- [Spring Boot](https://spring.io/): Por proporcionar el framework robusto y ágil sobre el que se construye esta API.
+- [Maven](https://maven.apache.org/) Por la gestión de dependencias y la automatización de la construcción del proyecto.
+- Huachao Mao: Por la excelente extensión [REST Client](https://github.com/Huachao/vscode-restclient) de VS Code que facilitó las pruebas de los endpoints.
+
+### Agradecimientos Adicionales
+
+- Spring Initializr: Por la estructura base del proyecto.
+- Comunidad de Spring en Español: Por la documentación y tutoriales que guiaron el desarrollo.
