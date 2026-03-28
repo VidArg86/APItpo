@@ -28,12 +28,12 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 
 1. Asegúrate de tener instalado Java 17 y Maven.
 2. Entra en la carpeta e-commerce3 y ejecuta el siguiente comando en la terminal:
-    // Para Linux / macOS
-    ./mvnw spring-boot:run 
-    // Para Windows (PowerShell o CMD)
-    .\mvnw.cmd spring-boot:run windows
+    <p>Para Linux / macOS</p>
+    <pre>  ./mvnw spring-boot:run</pre>
+    <p>Para Windows (PowerShell o CMD)</p>
+    <pre>  .\mvnw.cmd spring-boot:run windows</pre>
 
-3. Alternativamente, puedes usar la extensión de Spring Boot en VS Code haciendo clic en el icono generado en la barra lateral.}
+3. Alternativamente, puedes usar la extensión de Spring Boot en VS Code haciendo clic en el icono generado en la barra lateral.
 
 ---
 
