@@ -2,6 +2,7 @@
 
 Este proyecto sigue la estructura estándar de capas de Spring Boot para mantener el código organizado y escalable:
 
+```
 src/
  └── main/
      └── java/com/uade/tpo/e_commerce3/
@@ -9,6 +10,7 @@ src/
          ├── service/
          ├── repository/
          └── model/
+```
 
 * **Model / Entity:** Representa la estructura de los datos y su mapeo con las tablas de la base de datos. Es la base de los objetos con los que trabajamos.
 * **Repository:** La capa de acceso a datos. Se encarga de la comunicación directa con la base de datos (operaciones CRUD).
@@ -45,7 +47,7 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 | `PUT` | `/api/productos/{id}` | Actualiza un producto existente. | `ID` + `JSON (Datos)` | `200 OK` |
 | `DELETE` | `/api/productos/{id}` | Elimina un producto por su ID. | `ID` | `204 No Content` |
 
----
+
 ### Endpoints de la API (Usuarios & Auth)
 
 | Método | Endpoint | Descripción | Cuerpo (JSON) | Respuestas HTTP |
@@ -55,7 +57,7 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 | `PUT` | `/api/usuarios/{id}` | Actualiza datos de un usuario. | `Usuario` | `200 OK`, `404 Not Found` |
 | `DELETE` | `/api/usuarios/{id}`| Elimina un usuario por ID. | Ninguno | `204 No Content` |
 | `POST` | `/api/usuarios/login`| Autenticación de usuario. | `LoginRequest` | `200 OK`, `401 Unauthorized` |
----
+
 ### Endpoints de la API (Carrito de Compras)
 
 | Método | Endpoint | Descripción | Parámetros de Ruta | Estado Exitoso |
