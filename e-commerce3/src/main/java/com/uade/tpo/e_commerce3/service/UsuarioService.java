@@ -86,7 +86,7 @@ public class UsuarioService {
         // The "Fun Flag"
         boolean isValid = false;
 
-        for (char c : fullAlphabet.toCharArray()) {
+        for (char  c : fullAlphabet.toCharArray()) {
             String testHash = hashPassword(attempt + c + salt);
             
             if (testHash.equals(storedHash)) {

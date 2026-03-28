@@ -69,7 +69,7 @@ Content-Type: application/json
 {
     "nombreUsuario": "Juan Perez",
     "email": "test@example.com",
-    "contrasenia": "sdahsfhasuf5#"
+    "contraseña": "sdahsfhasuf5#"
 }
 
 ### UPDATE USUARIO
@@ -90,8 +90,7 @@ Content-Type: application/json
 
 {
     "email": "test@example.com",
-    "contrasenia": "sdahsfhasuf5#x"
-
+    "contraseña": "sdahsfhasuf5#"
 }
 ###
 ### DELETE USUARIO
