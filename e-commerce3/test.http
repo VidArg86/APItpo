@@ -62,7 +62,10 @@ Usuarios
 ### GET ALL USUARIOS
 GET http://localhost:8080/api/usuarios
 
-### CREATE USUARIO
+### GET USUARIO POR ID
+GET http://localhost:8080/api/usuarios/999
+
+### CREATE USUARIO 1
 POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
@@ -70,6 +73,30 @@ Content-Type: application/json
     "nombreUsuario": "Juan Perez",
     "email": "test@example.com",
     "contraseña": "sdahsfhasuf5#"
+}
+
+###
+
+### CREATE USUARIO 2
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+    "nombreUsuario": "Maria Lopez",
+    "email": "maria@example.com",
+    "contraseña": "abcd"
+}
+
+###
+
+### CREATE USUARIO 3
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+    "nombreUsuario": "Carlos Gomez",
+    "email": "carlos@example.com",
+    "contraseña": "pass123"
 }
 
 ### UPDATE USUARIO
@@ -81,7 +108,7 @@ Content-Type: application/json
     "email": "test2@example.com",
     "DNI": 12345678,
     "numeroTelefonico": "9988776655",
-    "contrasenia": "dfhjsidhfgis3.2"
+    "contraseña": "dfhjsidhfgis3.2"
 }
 ###
 ### Entrar a la pagina

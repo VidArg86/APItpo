@@ -38,6 +38,13 @@ public class UsuarioService {
     public List<Usuario> getAllUsuarios() {
         return usuarioRepository.findAll();
     }
+
+    // Obtiene un usuario específico a partir de su ID
+    public Usuario obtenerUsuarioPorId(Long id) {
+    return usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+    }
+    
     // Update
     public Usuario updateUsuario(Long id, Usuario updatedData) {
     return usuarioRepository.findById(id).map(usuario -> {

@@ -32,6 +32,23 @@ public class UsuarioController {
     public List<Usuario> getAllUsuarios() {
         return UsuarioService.getAllUsuarios();
     }
+    // Endpoint para obtener un usuario específico por su ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerUsuarioPorId(@PathVariable Long id) {
+        try {
+            // Busca el usuario en el service
+            Usuario usuario = UsuarioService.obtenerUsuarioPorId(id);
+
+            // Devuelve HTTP 200 con el usuario
+            return ResponseEntity.ok(usuario);
+
+        } catch (RuntimeException e) {
+            // Si no existe, devuelve HTTP 404 con mensaje
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Usuario no encontrado con ID: " + id);
+        }
+    }
+    
 //<?> is a wildcard
     @PostMapping
     public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario) {
