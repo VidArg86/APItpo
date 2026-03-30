@@ -48,4 +48,7 @@ public class ProductoService {
     public void deleteProducto(Long id) {
         productoRepository.deleteById(id);
     }
+    public List<Producto> getProductosOrdenados() {
+    return productoRepository.findAllByOrderByNombreAsc();
+}
 }

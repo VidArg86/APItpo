@@ -51,6 +51,11 @@ public class ProductoController {
             return ResponseEntity.badRequest().body("Categoría inválida.");
         }
     }
+    // GET /api/productos/ordenados
+    @GetMapping("/ordenados")
+    public List<Producto> getProductosOrdenados() {
+        return productoService.getProductosOrdenados();
+    }
     
     // 1. Update Endpoint (PUT)
     // URL Example: http://localhost:8080/api/productos/1
@@ -71,6 +76,8 @@ public class ProductoController {
         productoService.deleteProducto(id);
         return ResponseEntity.noContent().build(); // Returns a 204 No Content status
     }
+
+    
 
     
 }

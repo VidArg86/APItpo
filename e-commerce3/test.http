@@ -12,13 +12,18 @@ GET http://localhost:8080/api/productos
 
 ###
 
-### 2. GET PRODUCTOS POR CATEGORIA
+### 2. GET PRODUCTOS ORDENADOS ALFABETICAMENTE
+GET http://localhost:8080/api/productos/ordenados
+
+###
+
+### 3. GET PRODUCTOS POR CATEGORIA
 # Valores posibles: CATEGORIA1, CATEGORIA2, CATEGORIA3, CATEGORIA4, CATEGORIA5
 GET http://localhost:8080/api/productos/categoria/CATEGORIA1
 
 ###
 
-### 3. CREATE A NEW PRODUCTO (POST)
+### 4. CREATE A NEW PRODUCTO (POST)
 POST http://localhost:8080/api/productos
 Content-Type: application/json
 
@@ -45,7 +50,7 @@ Content-Type: application/json
 
 ###
 
-### 4. UPDATE AN EXISTING PRODUCTO (PUT)
+### 5. UPDATE AN EXISTING PRODUCTO (PUT)
 # Replace the '2' at the end with the actual ID from your database
 PUT http://localhost:8080/api/productos/2
 Content-Type: application/json
@@ -60,7 +65,7 @@ Content-Type: application/json
 
 ###
 
-### 5. DELETE A PRODUCTO (DELETE)
+### 6. DELETE A PRODUCTO (DELETE)
 # Replace the '1' with the ID you want to destroy
 DELETE http://localhost:8080/api/productos/1
 

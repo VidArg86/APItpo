@@ -12,4 +12,5 @@ import com.uade.tpo.e_commerce3.model.enums.Categoria;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByCategoria(Categoria categoria);
+    List<Producto> findAllByOrderByNombreAsc(); //aca ordena por nombre alfabeticamente, si quisieramos por precio seria findAllByOrderByPrecioAsc()
 }
