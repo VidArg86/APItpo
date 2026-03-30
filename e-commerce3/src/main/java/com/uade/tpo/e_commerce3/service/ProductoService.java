@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.e_commerce3.model.Producto;
+import com.uade.tpo.e_commerce3.model.enums.Categoria;
 import com.uade.tpo.e_commerce3.repository.ProductoRepository;
 
 import jakarta.transaction.Transactional;
@@ -26,6 +27,11 @@ public class ProductoService {
     // Read
     public List<Producto> getAllProductos() {
         return productoRepository.findAll();
+    }
+
+    // Filtrar por categoría
+    public List<Producto> getProductosByCategoria(Categoria categoria) {
+        return productoRepository.findByCategoria(categoria);
     }
 
     // Update Method

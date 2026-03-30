@@ -11,6 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.Data;
+import com.uade.tpo.e_commerce3.model.enums.Categoria;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 
 @Data
 @Entity
@@ -30,6 +33,10 @@ public class Producto {
     private Double precio;
 
     private Integer stock;
+
+    @Enumerated(EnumType.STRING)  // guarda el nombre ("CATEGORIA1") en vez del índice (5)
+    @Column(nullable = false)
+    private Categoria categoria;
 
     @Lob
     @Basic(fetch = FetchType.LAZY)

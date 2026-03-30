@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uade.tpo.e_commerce3.model.Producto;
+import com.uade.tpo.e_commerce3.model.enums.Categoria;
 import com.uade.tpo.e_commerce3.service.ProductoService;
 
 
@@ -39,6 +40,16 @@ public class ProductoController {
     @GetMapping
     public List<Producto> getAllProductos() {
         return productoService.getAllProductos();
+    }
+    // GET /api/productos/categoria/
+    @GetMapping("/categoria/{categoria}")
+    public ResponseEntity<?> getByCategoria(@PathVariable Categoria categoria) {
+        try {
+            List<Producto> productos = productoService.getProductosByCategoria(categoria);
+            return ResponseEntity.ok(productos);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Categoría inválida.");
+        }
     }
     
     // 1. Update Endpoint (PUT)

@@ -12,7 +12,13 @@ GET http://localhost:8080/api/productos
 
 ###
 
-### 2. CREATE A NEW PRODUCTO (POST)
+### 2. GET PRODUCTOS POR CATEGORIA
+# Valores posibles: CATEGORIA1, CATEGORIA2, CATEGORIA3, CATEGORIA4, CATEGORIA5
+GET http://localhost:8080/api/productos/categoria/CATEGORIA1
+
+###
+
+### 3. CREATE A NEW PRODUCTO (POST)
 POST http://localhost:8080/api/productos
 Content-Type: application/json
 
@@ -20,10 +26,12 @@ Content-Type: application/json
     "nombre": "Monitor LG",
     "descripcion": "70 pulgadas, PLASMA, 144hz",
     "precio": 200.21,
-    "stock":20
+    "stock": 20,
+    "categoria": "CATEGORIA1"
 }
 
 ###
+
 POST http://localhost:8080/api/productos
 Content-Type: application/json
 
@@ -31,24 +39,28 @@ Content-Type: application/json
     "nombre": "Monitor LG",
     "descripcion": "55 pulgadas, LED , 144hz",
     "precio": 150.21,
-    "stock":20
+    "stock": 20,
+    "categoria": "CATEGORIA2"
 }
 
 ###
 
-### 3. UPDATE AN EXISTING PRODUCTO (PUT)
+### 4. UPDATE AN EXISTING PRODUCTO (PUT)
 # Replace the '2' at the end with the actual ID from your database
 PUT http://localhost:8080/api/productos/2
 Content-Type: application/json
 
 {
     "nombre": "Monitor LG UltraWide",
-    "descripcion": "Actualizado: 34 pulgadas, curvo"
+    "descripcion": "Actualizado: 34 pulgadas, curvo",
+    "precio": 180.00,
+    "stock": 15,
+    "categoria": "CATEGORIA1"
 }
 
 ###
 
-### 4. DELETE A PRODUCTO (DELETE)
+### 5. DELETE A PRODUCTO (DELETE)
 # Replace the '1' with the ID you want to destroy
 DELETE http://localhost:8080/api/productos/1
 
