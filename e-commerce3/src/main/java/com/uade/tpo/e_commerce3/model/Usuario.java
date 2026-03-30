@@ -21,13 +21,16 @@ public class Usuario {
 
     @Column(nullable = false)
     private String nombreUsuario;
+
+    @Column(nullable = false)
+    private String nombre;
+
+    @Column(nullable = false)
+    private String apellido;
     
     @Column(unique = true, nullable = false)
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false)
     private String contraseña;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String salt;
-    }
+}

@@ -79,15 +79,12 @@ public class UsuarioController {
     
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-        
-        // This calls the diabolical 62-character loop
-        boolean success = UsuarioService.verifyLogin(request.getEmail(), request.getPassword());
+    boolean success = UsuarioService.verifyLogin(request.getEmail(), request.getPassword());
 
-        if (success) {
-            return ResponseEntity.ok("Login successful!.");
-        } else {
-            // We return 401 Unauthorized for a failed login
-            return ResponseEntity.status(401).body("Credenciales Invalidas, intente con otra contraseña o email.");
-        }
+    if (success) {
+        return ResponseEntity.ok("Login exitoso.");
+    } else {
+        return ResponseEntity.status(401).body("Credenciales inválidas.");
     }
+}
 }

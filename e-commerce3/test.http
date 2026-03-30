@@ -24,7 +24,6 @@ Content-Type: application/json
 }
 
 ###
-###
 POST http://localhost:8080/api/productos
 Content-Type: application/json
 
@@ -34,16 +33,17 @@ Content-Type: application/json
     "precio": 150.21,
     "stock":20
 }
+
 ###
+
 ### 3. UPDATE AN EXISTING PRODUCTO (PUT)
-# Replace the '1' at the end with the actual ID from your H2 database
+# Replace the '2' at the end with the actual ID from your database
 PUT http://localhost:8080/api/productos/2
 Content-Type: application/json
 
 {
     "nombre": "Monitor LG UltraWide",
     "descripcion": "Actualizado: 34 pulgadas, curvo"
-
 }
 
 ###
@@ -53,8 +53,6 @@ Content-Type: application/json
 DELETE http://localhost:8080/api/productos/1
 
 
-
-
 ---------------------------------------
 
 Usuarios
@@ -62,15 +60,21 @@ Usuarios
 ### GET ALL USUARIOS
 GET http://localhost:8080/api/usuarios
 
+###
+
 ### GET USUARIO POR ID
 GET http://localhost:8080/api/usuarios/999
+
+###
 
 ### CREATE USUARIO 1
 POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
 {
-    "nombreUsuario": "Juan Perez",
+    "nombreUsuario": "jperez",
+    "nombre": "Juan",
+    "apellido": "Perez",
     "email": "test@example.com",
     "contraseña": "sdahsfhasuf5#"
 }
@@ -82,7 +86,9 @@ POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
 {
-    "nombreUsuario": "Maria Lopez",
+    "nombreUsuario": "mlopez",
+    "nombre": "Maria",
+    "apellido": "Lopez",
     "email": "maria@example.com",
     "contraseña": "abcd"
 }
@@ -94,56 +100,69 @@ POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
 {
-    "nombreUsuario": "Carlos Gomez",
+    "nombreUsuario": "cgomez",
+    "nombre": "Carlos",
+    "apellido": "Gomez",
     "email": "carlos@example.com",
     "contraseña": "pass123"
 }
 
+###
+
 ### UPDATE USUARIO
+# Replace '1' with the actual user ID
 PUT http://localhost:8080/api/usuarios/1
 Content-Type: application/json
 
 {
-    "nombre": "Edward Von Richtoffen",
+    "nombreUsuario": "evrichtoffen",
+    "nombre": "Edward",
+    "apellido": "Von Richtoffen",
     "email": "test2@example.com",
-    "DNI": 12345678,
-    "numeroTelefonico": "9988776655",
     "contraseña": "dfhjsidhfgis3.2"
 }
+
 ###
-### Entrar a la pagina
+
+### LOGIN
+# IMPORTANTE: el campo es "password", no "contraseña"
 POST http://localhost:8080/api/usuarios/login
 Content-Type: application/json
 
 {
     "email": "test@example.com",
-    "contraseña": "sdahsfhasuf5#"
+    "password": "sdahsfhasuf5#"
 }
+
 ###
+
 ### DELETE USUARIO
 DELETE http://localhost:8080/api/usuarios/1
+
 ###
+
+
+---------------------------------------
+
+Carritos
 
 ### Configuration
 @baseUrl = http://localhost:8080/api/carritos
 @contentType = application/json
 
 ### 1. Get all carts
-# Calls carritoService.findAll()
 GET {{baseUrl}}
 Accept: {{contentType}}
 
 ###
 
 ### 2. Get a specific cart by ID
-# Calls carritoService.findById(id)
 GET {{baseUrl}}/1
 Accept: {{contentType}}
 
 ###
 
 ### 3. Create a new cart (Initial setup)
-# Calls carritoService.create(carrito)
 POST {{baseUrl}}
 Content-Type: {{contentType}}
 
@@ -157,21 +176,20 @@ Content-Type: {{contentType}}
 
 ### 4. Add a product to a cart
 # Path: /api/carritos/{carritoId}/productos/{productoId}
-# Calls carritoService.addProductoToCarrito, which recalculates the total price.
+# Agrega 1 unidad por defecto. Para más, agregar ?cantidad=N
 POST {{baseUrl}}/1/productos/3
 
 ###
 
+### 4b. Add a product with custom quantity
+POST {{baseUrl}}/1/productos/2?cantidad=3
+
+###
+
 ### 5. Remove a product from a cart
-# Path: /api/carritos/{carritoId}/productos/{productoId}
-# Calls carritoService.removeProductoFromCarrito and updates total price.
 DELETE {{baseUrl}}/1/productos/2
 
 ###
 
 ### 6. Delete the entire cart
-# Calls carritoService.delete(id)
 DELETE {{baseUrl}}/1
-
-
-docker run --name mysql-uade-BDD2 -e MYSQL_ROOT_PASSWORD=vampireKilla -e MYSQL_DATABASE=e-commerce3 -p 3306:3306 -v mysql_ecommerce_data:/var/lib/mysql --restart unless-stopped -d mysql:8.0
