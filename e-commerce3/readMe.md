@@ -76,10 +76,8 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 - **[Maven](https://maven.apache.org/)**: Por la gestión de dependencias y la automatización de la construcción del proyecto.
 - **Huachao Mao**: Por la excelente extensión **[REST Client](https://github.com/Huachao/vscode-restclient)** de VS Code que facilitó las pruebas de los endpoints.
 - **Comunidad de Spring en Español**: Por la documentación y tutoriales que guiaron el desarrollo.
-- **[MySQL Workbench](https://www.mysql.com/products/workbench/)**:
-- **[HAMPP](https://www.apachefriends.org/es/download.html)**: 
+- **[MySQL Workbench](https://www.mysql.com/products/workbench/)**:Utilizado para el modelado de datos, diseño de diagramas E-R y la ejecución de scripts SQL de manera profesional.
+- **[XAMPP](https://www.apachefriends.org/es/download.html)**: Por proveer el entorno local de MySQL que garantizó la estabilidad de la base de datos y la persistencia de los datos durante el desarrollo.
 
 
-## Informacion de contacto
-
-Refencie mi perfil
+# Informacion de contacto

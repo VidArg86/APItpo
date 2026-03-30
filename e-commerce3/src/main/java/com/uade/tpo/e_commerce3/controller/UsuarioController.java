@@ -79,7 +79,7 @@ public class UsuarioController {
     
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-    boolean success = UsuarioService.verifyLogin(request.getEmail(), request.getPassword());
+    boolean success = UsuarioService.verifyLogin(request.getEmail(), request.getContraseña());
 
     if (success) {
         return ResponseEntity.ok("Login exitoso.");
