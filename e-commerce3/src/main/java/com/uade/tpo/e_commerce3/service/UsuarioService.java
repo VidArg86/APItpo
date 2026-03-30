@@ -1,10 +1,8 @@
 package com.uade.tpo.e_commerce3.service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
