@@ -203,10 +203,14 @@ POST {{baseUrl}}/1/productos/2?cantidad=3
 
 ###
 
-### 5. Remove a product from a cart
+### 5. Check out
+POST http://localhost:8080/api/carritos/1/checkout
+###
+
+### 6. Remove a product from a cart
 DELETE {{baseUrl}}/1/productos/2
 
 ###
 
-### 6. Delete the entire cart
+### 7. Delete the entire cart
 DELETE {{baseUrl}}/1

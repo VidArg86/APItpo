@@ -1,5 +1,7 @@
 package com.uade.tpo.e_commerce3.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +22,8 @@ public class ItemCarrito {
     @ManyToOne
     @JoinColumn(name = "producto_id")
     private Producto producto;
-
+    
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "carrito_id")
     private Carrito carrito;

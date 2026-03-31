@@ -66,6 +66,7 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 | `GET` | `/api/carritos/{id}` | Obtiene el detalle de un carrito específico. | `id` (Carrito) | `200 OK` |
 | `POST` | `/api/carritos` | Inicializa un nuevo carrito. | Ninguno | `201 Created` |
 | `POST` | `/api/carritos/{cId}/productos/{pId}` | Agrega un producto al carrito. | `cId`, `pId` | `200 OK` |
+| `POST` | `/api/carritos/{id}/checkout` | Realiza el checkout, descuenta stock y vacía el carrito. | `id` (Carrito) | `200 Ok` |
 | `DELETE` | `/api/carritos/{cId}/productos/{pId}` | Quita un producto del carrito. | `cId`, `pId` | `200 OK` |
 | `DELETE` | `/api/carritos/{id}` | Elimina el carrito por completo. | `id` (Carrito) | `204 No Content` |
 

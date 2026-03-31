@@ -49,38 +49,38 @@ public class CarritoService {
      * Adds a product to the cart. If the product is already there, it increases quantity.
      */
     public Carrito addProductoToCarrito(Long carritoId, Long productoId, int cantidad) {
-        Carrito carrito = carritoRepository.findById(carritoId)
-                .orElseThrow(() -> new RuntimeException("Carrito not found"));
-        
-        Producto producto = productoRepository.findById(productoId)
-                .orElseThrow(() -> new RuntimeException("Producto not found"));
+    // Buscamos el carrito. Si no existe, lanzamos el error que captura el Controller
+    Carrito carrito = carritoRepository.findById(carritoId)
+            .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
+    
+    Producto producto = productoRepository.findById(productoId)
+            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        // 1. Check if we have enough stock in the master Producto table
-        if (producto.getStock() < cantidad) {
-            throw new RuntimeException("No hay suficiente stock disponible");
-        }
+    // Validar stock disponible en la tabla maestra de Productos
+    if (producto.getStock() < cantidad) {
+        throw new RuntimeException("No hay suficiente stock disponible");
+    }
 
-        // 2. Check if this product is already in the cart list
-        Optional<ItemCarrito> itemExistente = carrito.getProductos().stream()
-                .filter(item -> item.getProducto().getId().equals(productoId))
-                .findFirst();
+    // Buscar si el producto ya está en el carrito para no duplicar filas
+    Optional<ItemCarrito> itemExistente = carrito.getProductos().stream()
+            .filter(item -> item.getProducto().getId().equals(productoId))
+            .findFirst();
 
-        if (itemExistente.isPresent()) {
-            // Update quantity of the existing line item
-            ItemCarrito item = itemExistente.get();
-            item.setCantidad(item.getCantidad() + cantidad);
-        } else {
-            // Create a new Line Item (ItemCarrito)
-            ItemCarrito nuevoItem = new ItemCarrito();
-            nuevoItem.setCarrito(carrito);
-            nuevoItem.setProducto(producto);
-            nuevoItem.setCantidad(cantidad);
-            // Add it to the list in Carrito
-            carrito.getProductos().add(nuevoItem);
-        }
-        
-        recalculateTotal(carrito);
-        return carritoRepository.save(carrito);
+    if (itemExistente.isPresent()) {
+        // Si ya existe, aumentamos la cantidad en el item intermedio
+        ItemCarrito item = itemExistente.get();
+        item.setCantidad(item.getCantidad() + cantidad);
+    } else {
+        // Si es nuevo, creamos el vínculo
+        ItemCarrito nuevoItem = new ItemCarrito();
+        nuevoItem.setCarrito(carrito);
+        nuevoItem.setProducto(producto);
+        nuevoItem.setCantidad(cantidad);
+        carrito.getProductos().add(nuevoItem);
+    }
+    
+    recalculateTotal(carrito); //
+    return carritoRepository.save(carrito);
     }
 
     /**
@@ -117,5 +117,36 @@ public class CarritoService {
                 .mapToDouble(item -> item.getProducto().getPrecio() * item.getCantidad())
                 .sum();
         carrito.setPrecioTotal(total);
+    }
+    public String checkout(Long carritoId) {
+    Carrito carrito = carritoRepository.findById(carritoId)
+            .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
+
+    if (carrito.getProductos().isEmpty()) {
+        throw new RuntimeException("El carrito está vacío");
+    }
+
+    // 1. Validar stock de todos los productos antes de tocar nada
+    for (ItemCarrito item : carrito.getProductos()) {
+        Producto producto = item.getProducto();
+        if (producto.getStock() < item.getCantidad()) {
+            throw new RuntimeException("Stock insuficiente para: " + producto.getNombre());
+        }
+    }
+
+    // 2. Descontar stock
+    for (ItemCarrito item : carrito.getProductos()) {
+        Producto producto = item.getProducto();
+        producto.setStock(producto.getStock() - item.getCantidad());
+        productoRepository.save(producto);
+    }
+
+    // 3. Guardar el total para el mensaje final y limpiar carrito
+    double totalFinal = carrito.getPrecioTotal();
+    carrito.getProductos().clear();
+    carrito.setPrecioTotal(0.0);
+    carritoRepository.save(carrito);
+
+    return "Checkout exitoso. Total abonado: $" + totalFinal;
     }
 }

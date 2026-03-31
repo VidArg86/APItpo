@@ -3,6 +3,7 @@ package com.uade.tpo.e_commerce3.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,21 +47,37 @@ public class CarritoController {
     // 4. Add a product to a cart
     // Path example: POST /api/carritos/1/productos/5
     @PostMapping("/{carritoId}/productos/{productoId}")
-    public ResponseEntity<Carrito> addProducto(@PathVariable Long carritoId, @PathVariable Long productoId,@RequestParam(defaultValue = "1") int cantidad) {
+    public ResponseEntity<?> addProducto(
+            @PathVariable Long carritoId, 
+            @PathVariable Long productoId,
+            @RequestParam(defaultValue = "1") int cantidad) {
         try {
-            return ResponseEntity.ok(carritoService.addProductoToCarrito(carritoId, productoId, cantidad));
+            Carrito carritoActualizado = carritoService.addProductoToCarrito(carritoId, productoId, cantidad);
+            return ResponseEntity.ok(carritoActualizado);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            // Si el ID del carrito o producto no existen, devolvemos el mensaje de error
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    
+    // 5. Checkout del carrito
+    @PostMapping("/{id}/checkout")
+    public ResponseEntity<String> checkout(@PathVariable Long id) {
+        try {
+            String mensaje = carritoService.checkout(id);
+            return ResponseEntity.ok(mensaje);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    // 5. Remove a product from a cart
+    // 6. Remove a product from a cart
     @DeleteMapping("/{carritoId}/productos/{productoId}")
     public ResponseEntity<Carrito> removeProducto(@PathVariable Long carritoId, @PathVariable Long productoId) {
         return ResponseEntity.ok(carritoService.removeProductoFromCarrito(carritoId, productoId));
     }
 
-    // 6. Delete the entire cart
+    // 7. Delete the entire cart
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCarrito(@PathVariable Long id) {
         carritoService.delete(id);

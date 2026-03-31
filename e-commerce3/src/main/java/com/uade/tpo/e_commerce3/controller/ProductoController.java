@@ -23,7 +23,7 @@ import com.uade.tpo.e_commerce3.service.ProductoService;
 
 
 @RestController
-// para acceder a este controlador, la URL base será /api/productos
+
 @RequestMapping("/api/productos")
 public class ProductoController {
 
@@ -33,7 +33,6 @@ public class ProductoController {
     @PostMapping
     public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
         Producto newProducto = productoService.saveProducto(producto);
-        // Returns 201 Created and the new object with its generated ID
         return ResponseEntity.status(HttpStatus.CREATED).body(newProducto);
     }
 
@@ -51,14 +50,12 @@ public class ProductoController {
             return ResponseEntity.badRequest().body("Categoría inválida.");
         }
     }
-    // GET /api/productos/ordenados
+
     @GetMapping("/ordenados")
     public List<Producto> getProductosOrdenados() {
         return productoService.getProductosOrdenados();
     }
     
-    // 1. Update Endpoint (PUT)
-    // URL Example: http://localhost:8080/api/productos/1
     @PutMapping("/{id}")
     public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto productoDetails) {
         try {
@@ -69,8 +66,6 @@ public class ProductoController {
         }
     }
 
-    // 2. Delete Endpoint (DELETE)
-    // URL Example: http://localhost:8080/api/productos/1
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
         productoService.deleteProducto(id);
