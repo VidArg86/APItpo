@@ -80,7 +80,7 @@ GET http://localhost:8080/api/usuarios
 ###
 
 ### GET USUARIO POR ID
-GET http://localhost:8080/api/usuarios/999
+GET http://localhost:8080/api/usuarios/999 
 
 ###
 
@@ -214,3 +214,66 @@ DELETE {{baseUrl}}/1/productos/2
 
 ### 7. Delete the entire cart
 DELETE {{baseUrl}}/1
+
+---------------------------------------
+
+Perfiles
+
+### 1. CREATE PERFIL
+# IMPORTANTE: el usuario con ID 1 debe existir
+POST http://localhost:8080/api/perfiles/usuario/1
+Content-Type: application/json
+
+{
+    "nombreCompleto": "Juan Perez",
+    "telefono": "11 2648-2304",
+    "direccion": "Avenida Presidente Perón 1746",
+    "fechaNacimiento": "04-04-2003"
+}
+
+####
+POST http://localhost:8080/api/perfiles/usuario/2
+Content-Type: application/json
+
+{
+    "nombreCompleto": "Maria Lopez",
+    "telefono": "11 3555-0085",
+    "direccion": "Av Santa Fe 4565",
+    "fechaNacimiento": "10-05-2002"
+}
+
+###
+
+### 2. GET PERFIL POR ID 
+GET http://localhost:8080/api/perfiles/2
+
+
+###
+
+### 3. GET ALL PERFILES
+GET http://localhost:8080/api/perfiles
+
+###
+
+### 4. GET PERFIL POR USUARIO
+GET http://localhost:8080/api/perfiles/usuario/2
+
+
+###
+
+### 5. UPDATE PERFIL
+PUT http://localhost:8080/api/perfiles/1
+Content-Type: application/json
+
+{
+    "nombreCompleto": "Juan Perez Fernandez",
+    "telefono": "11 5566-2304",
+    "direccion": "Avenida Sarmiento 2345",
+    "fechaNacimiento": "04-04-2003"
+}
+
+###
+### 6. DELETE PERFIL
+DELETE http://localhost:8080/api/perfiles/1
+
+###
