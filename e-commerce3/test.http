@@ -70,7 +70,7 @@ GET http://localhost:8080/api/productos/categoria/1
 ###
 
 ### 4. CREATE A NEW PRODUCTO (POST)
-# IMPORTANTE: categoria va con su ID, no con el nombre
+# Un producto puede tener una o más categorías
 POST http://localhost:8080/api/productos
 Content-Type: application/json
 
@@ -79,7 +79,7 @@ Content-Type: application/json
     "descripcion": "70 pulgadas, PLASMA, 144hz",
     "precio": 200.21,
     "stock": 20,
-    "categoria": { "id": 1 }
+    "categorias": [{ "id": 1 }]
 }
 
 ###
@@ -88,16 +88,28 @@ POST http://localhost:8080/api/productos
 Content-Type: application/json
 
 {
-    "nombre": "Monitor LG",
-    "descripcion": "55 pulgadas, LED, 144hz",
+    "nombre": "Silla Gamer",
+    "descripcion": "Silla ergonomica con soporte lumbar",
     "precio": 150.21,
     "stock": 20,
-    "categoria": { "id": 2 }
+    "categorias": [{ "id": 1 }, { "id": 3 }]
 }
 
 ###
 
-### 5. UPDATE AN EXISTING PRODUCTO (PUT)
+### 5. AGREGAR CATEGORIA A UN PRODUCTO EXISTENTE
+# POST /api/productos/{productoId}/categorias/{categoriaId}
+POST http://localhost:8080/api/productos/1/categorias/2
+
+###
+
+### 6. QUITAR CATEGORIA DE UN PRODUCTO
+# DELETE /api/productos/{productoId}/categorias/{categoriaId}
+DELETE http://localhost:8080/api/productos/1/categorias/2
+
+###
+
+### 7. UPDATE AN EXISTING PRODUCTO (PUT)
 PUT http://localhost:8080/api/productos/2
 Content-Type: application/json
 
@@ -106,13 +118,15 @@ Content-Type: application/json
     "descripcion": "Actualizado: 34 pulgadas, curvo",
     "precio": 180.00,
     "stock": 15,
-    "categoria": { "id": 1 }
+    "categorias": [{ "id": 1 }]
 }
 
 ###
 
-### 6. DELETE A PRODUCTO (DELETE)
+### 8. DELETE A PRODUCTO (DELETE)
 DELETE http://localhost:8080/api/productos/1
+
+###
 
 ---------------------------------------
 
