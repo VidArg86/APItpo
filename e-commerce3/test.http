@@ -5,6 +5,53 @@ Using the following Scripts
 
 --------------------------------------------------------
 
+Categorias
+
+### 1. GET ALL CATEGORIAS
+GET http://localhost:8080/api/categorias
+
+###
+
+### 2. GET CATEGORIA POR ID
+GET http://localhost:8080/api/categorias/1
+
+###
+
+### 3. CREATE CATEGORIA (hacer esto ANTES de crear productos)
+POST http://localhost:8080/api/categorias
+Content-Type: application/json
+
+{
+    "nombre": "Electronica"
+}
+
+###
+
+POST http://localhost:8080/api/categorias
+Content-Type: application/json
+
+{
+    "nombre": "Ropa"
+}
+
+###
+
+POST http://localhost:8080/api/categorias
+Content-Type: application/json
+
+{
+    "nombre": "Hogar"
+}
+
+###
+
+### 4. DELETE CATEGORIA
+DELETE http://localhost:8080/api/categorias/1
+
+###
+
+--------------------------------------------------------
+
 Productos
 
 ### 1. GET ALL PRODUCTOS
@@ -17,13 +64,13 @@ GET http://localhost:8080/api/productos/ordenados
 
 ###
 
-### 3. GET PRODUCTOS POR CATEGORIA
-# Valores posibles: CATEGORIA1, CATEGORIA2, CATEGORIA3, CATEGORIA4, CATEGORIA5
-GET http://localhost:8080/api/productos/categoria/CATEGORIA1
+### 3. GET PRODUCTOS POR CATEGORIA (usar el ID de la categoria)
+GET http://localhost:8080/api/productos/categoria/1
 
 ###
 
 ### 4. CREATE A NEW PRODUCTO (POST)
+# IMPORTANTE: categoria va con su ID, no con el nombre
 POST http://localhost:8080/api/productos
 Content-Type: application/json
 
@@ -32,7 +79,7 @@ Content-Type: application/json
     "descripcion": "70 pulgadas, PLASMA, 144hz",
     "precio": 200.21,
     "stock": 20,
-    "categoria": "CATEGORIA1"
+    "categoria": { "id": 1 }
 }
 
 ###
@@ -42,16 +89,15 @@ Content-Type: application/json
 
 {
     "nombre": "Monitor LG",
-    "descripcion": "55 pulgadas, LED , 144hz",
+    "descripcion": "55 pulgadas, LED, 144hz",
     "precio": 150.21,
     "stock": 20,
-    "categoria": "CATEGORIA2"
+    "categoria": { "id": 2 }
 }
 
 ###
 
 ### 5. UPDATE AN EXISTING PRODUCTO (PUT)
-# Replace the '2' at the end with the actual ID from your database
 PUT http://localhost:8080/api/productos/2
 Content-Type: application/json
 
@@ -60,15 +106,13 @@ Content-Type: application/json
     "descripcion": "Actualizado: 34 pulgadas, curvo",
     "precio": 180.00,
     "stock": 15,
-    "categoria": "CATEGORIA1"
+    "categoria": { "id": 1 }
 }
 
 ###
 
 ### 6. DELETE A PRODUCTO (DELETE)
-# Replace the '1' with the ID you want to destroy
 DELETE http://localhost:8080/api/productos/1
-
 
 ---------------------------------------
 
