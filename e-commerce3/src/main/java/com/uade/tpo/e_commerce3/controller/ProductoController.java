@@ -52,6 +52,26 @@ public class ProductoController {
         }
     }
 
+    // POST /api/productos/1/categorias/2 -> agregar categoria a un producto
+    @PostMapping("/{productoId}/categorias/{categoriaId}")
+    public ResponseEntity<?> agregarCategoria(@PathVariable Long productoId, @PathVariable Long categoriaId) {
+        try {
+            return ResponseEntity.ok(productoService.agregarCategoria(productoId, categoriaId));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    // DELETE /api/productos/1/categorias/2 -> quitar categoria de un producto
+    @DeleteMapping("/{productoId}/categorias/{categoriaId}")
+    public ResponseEntity<?> quitarCategoria(@PathVariable Long productoId, @PathVariable Long categoriaId) {
+        try {
+            return ResponseEntity.ok(productoService.quitarCategoria(productoId, categoriaId));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     // PUT /api/productos/1 -> actualizar producto
     @PutMapping("/{id}")
     public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto productoDetails) {

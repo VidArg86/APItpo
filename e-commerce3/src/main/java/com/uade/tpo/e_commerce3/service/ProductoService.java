@@ -32,11 +32,36 @@ public class ProductoService {
         return productoRepository.findAll();
     }
 
-    // Filtrar por categoria (usando el id de la categoria)
+    // Filtrar por categoria
     public List<Producto> getProductosByCategoria(Long categoriaId) {
+        // Validamos que la categoria exista
+        categoriaRepository.findById(categoriaId)
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada con id: " + categoriaId));
+        return productoRepository.findByCategoriaId(categoriaId);
+    }
+
+    // Agregar una categoria a un producto existente
+    public Producto agregarCategoria(Long productoId, Long categoriaId) {
+        Producto producto = productoRepository.findById(productoId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + productoId));
         Categoria categoria = categoriaRepository.findById(categoriaId)
                 .orElseThrow(() -> new RuntimeException("Categoria no encontrada con id: " + categoriaId));
-        return productoRepository.findByCategoria(categoria);
+
+        if (!producto.getCategorias().contains(categoria)) {
+            producto.getCategorias().add(categoria);
+        }
+        return productoRepository.save(producto);
+    }
+
+    // Quitar una categoria de un producto
+    public Producto quitarCategoria(Long productoId, Long categoriaId) {
+        Producto producto = productoRepository.findById(productoId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + productoId));
+        Categoria categoria = categoriaRepository.findById(categoriaId)
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada con id: " + categoriaId));
+
+        producto.getCategorias().remove(categoria);
+        return productoRepository.save(producto);
     }
 
     // Update
@@ -46,8 +71,8 @@ public class ProductoService {
             producto.setDescripcion(updatedData.getDescripcion());
             producto.setPrecio(updatedData.getPrecio());
             producto.setStock(updatedData.getStock());
-            if (updatedData.getCategoria() != null) {
-                producto.setCategoria(updatedData.getCategoria());
+            if (updatedData.getCategorias() != null && !updatedData.getCategorias().isEmpty()) {
+                producto.setCategorias(updatedData.getCategorias());
             }
             return productoRepository.save(producto);
         }).orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id));

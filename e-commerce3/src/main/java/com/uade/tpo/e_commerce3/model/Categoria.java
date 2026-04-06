@@ -1,4 +1,5 @@
 package com.uade.tpo.e_commerce3.model;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,6 @@ public class Categoria {
     private String nombre;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "categorias", fetch = FetchType.LAZY)
     private List<Producto> productos = new ArrayList<>();
 }
