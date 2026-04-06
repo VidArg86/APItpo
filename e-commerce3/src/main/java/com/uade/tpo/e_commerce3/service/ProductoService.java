@@ -39,6 +39,8 @@ public class ProductoService {
         return productoRepository.findById(id).map(producto -> {
             producto.setNombre(updatedData.getNombre());
             producto.setDescripcion(updatedData.getDescripcion());
+            producto.setPrecio(updatedData.getPrecio());
+            producto.setImagen(updatedData.getImagen());
             // Save and return the updated version
             return productoRepository.save(producto);
         }).orElseThrow(() -> new RuntimeException("Product not found with id " + id));

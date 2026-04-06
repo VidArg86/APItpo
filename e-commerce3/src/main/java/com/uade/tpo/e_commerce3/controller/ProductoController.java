@@ -1,26 +1,19 @@
 package com.uade.tpo.e_commerce3.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.uade.tpo.e_commerce3.model.Producto;
 import com.uade.tpo.e_commerce3.model.enums.Categoria;
 import com.uade.tpo.e_commerce3.service.ProductoService;
-
-
-
-
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 
@@ -33,6 +26,7 @@ public class ProductoController {
     @PostMapping
     public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
         Producto newProducto = productoService.saveProducto(producto);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(newProducto);
     }
 
@@ -71,6 +65,35 @@ public class ProductoController {
         productoService.deleteProducto(id);
         return ResponseEntity.noContent().build(); // Returns a 204 No Content status
     }
+
+    private final String UPLOAD_DIR = "images/";
+    @PostMapping("/{id}/image")
+    public ResponseEntity<Producto> subirImage(@PathVariable Long id, @RequestParam("file") MultipartFile file, @RequestBody Producto productoDetails) {
+        try {
+            // 1. Guardar el archivo físicamente
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
+            Files.write(path, bytes);
+
+            // 2. Guardar la ruta en la base de datos
+            Producto updatedProducto = productoService.updateProducto(id, productoDetails);
+            return ResponseEntity.ok(updatedProducto);
+
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+//    public ResponseEntity<Producto> addImage(@PathVariable Long id, @RequestParam("image") MultipartFile file){
+//        try{
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get(Objects.requireNonNull(file.getOriginalFilename()));
+//            Files.write(path, bytes);
+//             return ResponseEntity.status(HttpStatus.CREATED).body(null);
+//        }catch (Exception e){
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
+
 
     
 
