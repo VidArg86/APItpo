@@ -11,15 +11,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.Data;
-import com.uade.tpo.e_commerce3.model.enums.Categoria;
+import com.uade.tpo.e_commerce3.model.Categoria;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
 
 @Data
 @Entity
 @Table(name = "productos")
 public class Producto {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,8 +35,8 @@ public class Producto {
 
     private Integer stock;
 
-    @Enumerated(EnumType.STRING)  // guarda el nombre ("CATEGORIA1") en vez del índice (5)
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
     @Lob
