@@ -44,8 +44,9 @@ public class UsuarioService {
             usuario.setNombre(updatedData.getNombre());
             usuario.setApellido(updatedData.getApellido());
             usuario.setEmail(updatedData.getEmail());
-            if (updatedData.getContraseña() != null && !updatedData.getContraseña().isEmpty()) {
-                usuario.setContraseña(updatedData.getContraseña());
+            if (updatedData.getPassword() != null && !updatedData.getPassword().isEmpty()) {
+                usuario.setPassword(updatedData.getPassword());
+
             }
             return usuarioRepository.save(usuario);
         }).orElseThrow(() -> new RuntimeException("Usuario no encontrado con id " + id));
@@ -59,7 +60,7 @@ public class UsuarioService {
     // Login simple — comparación directa, sin encriptación
     public boolean verifyLogin(String email, String contraseña) {
         return usuarioRepository.findByEmail(email)
-                .map(usuario -> usuario.getContraseña().equals(contraseña))
+                .map(usuario -> usuario.getPassword().equals(contraseña))
                 .orElse(false);
     }
 }
