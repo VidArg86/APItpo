@@ -70,6 +70,23 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 | `DELETE` | `/api/carritos/{cId}/productos/{pId}` | Quita un producto del carrito. | `cId`, `pId` | `200 OK` |
 | `DELETE` | `/api/carritos/{id}` | Elimina el carrito por completo. | `id` (Carrito) | `204 No Content` |
 
+### Endpoints de la API (Perfil)
+
+| Método | Endpoint | Descripción | Parámetros de Ruta | Estado Exitoso |
+| :--- | :--- | :--- | :--- | :--- |
+| `POST` | `/api/perfiles/usuario/{usuarioId}` | Crea un nuevo perfil asociado a un usuario. | `usuarioId` | `200 OK` |
+| `GET` | `/api/perfiles/{id}` | Obtiene el detalle (DTO) de un perfil por su ID. | `id` (Perfil) | `200 OK` |
+| `GET` | `/api/perfiles` | Lista todos los perfiles registrados. | Ninguno | `200 OK` |
+| `PUT` | `/api/perfiles/{id}` | Actualiza la información de un perfil existente. | `id` (Perfil) | `200 OK` |
+| `DELETE` | `/api/perfiles/{id}` | Elimina un perfil del sistema. | `id` (Perfil) | `204 No Content` |
+| `GET` | `/api/perfiles/usuario/{id}` | Obtiene el perfil asociado a un ID de usuario específico. | `id` (Usuario) | `200 OK` |
+
+## Grafico visual para el back-end:
+
+![Ecosistema General](./readMeResources/ecosistema%20general.png)
+![Producto Ecosistema](./readMeResources/producto%20ecosistema.png)
+![Usuario Ecosistema](./readMeResources/usuario%20ecosistema.png)
+
 ## Créditos y Agradecimientos
 
 - **[Spring Boot](https://spring.io/)**: Por proporcionar el framework robusto y ágil sobre el que se construye esta API.
