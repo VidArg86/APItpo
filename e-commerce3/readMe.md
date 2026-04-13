@@ -3,6 +3,7 @@
 Version Bassline:
 ![Bassline](./readMeResources/Bassline.png)
 ["Pump up the Bassline" -Shirako](https://open.spotify.com/intl-es/track/0vnzk4L0JyMODSqLp3pHwo?si=b5ee35a74cd14969)
+---
 Este proyecto sigue la estructura estándar de capas de Spring Boot para mantener el código organizado y escalable:
 
 ```
