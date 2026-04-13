@@ -1,0 +1,88 @@
+Usuarios
+
+### GET ALL USUARIOS
+GET http://localhost:8080/api/usuarios
+
+###
+
+### GET USUARIO POR ID
+GET http://localhost:8080/api/usuarios/999 
+
+###
+
+### CREATE USUARIO 1
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+    "email": "test@uade.edu.ar",
+    "contraseña": "password123",
+    "nombre": "Juan",
+    "apellido": "Perez",
+    "dni": "12345678",
+    "telefono": "11223344",
+    "direccion": "Calle Falsa 123"
+}
+
+###
+
+### CREATE USUARIO 2
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+    "nombreUsuario": "mlopez",
+    "nombre": "Maria",
+    "apellido": "Lopez",
+    "email": "maria@example.com",
+    "contraseña": "abcd"
+}
+
+###
+
+### CREATE USUARIO 3
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+    "nombreUsuario": "cgomez",
+    "nombre": "Carlos",
+    "apellido": "Gomez",
+    "email": "carlos@example.com",
+    "contraseña": "pass123"
+}
+
+###
+
+### UPDATE USUARIO
+# Replace '1' with the actual user ID
+PUT http://localhost:8080/api/usuarios/1
+Content-Type: application/json
+
+{
+    "nombreUsuario": "evrichtoffen",
+    "nombre": "Edward",
+    "apellido": "Von Richtoffen",
+    "email": "test2@example.com",
+    "contraseña": "dfhjsidhfgis3.2"
+}
+
+###
+
+### LOGIN
+# IMPORTANTE: el campo es "password", no "contraseña"
+POST http://localhost:8080/api/usuarios/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "sdahsfhasuf5#"
+}
+
+###
+
+### DELETE USUARIO
+DELETE http://localhost:8080/api/usuarios/1
+
+###
+

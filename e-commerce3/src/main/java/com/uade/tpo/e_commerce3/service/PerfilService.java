@@ -48,10 +48,12 @@ public class PerfilService {
     Perfil perfil = perfilRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Perfil no encontrado"));
 
-    perfil.setNombreCompleto(nuevoPerfil.getNombreCompleto());
+    // Fixed field names to match the 1.0 Model
+    perfil.setNombre(nuevoPerfil.getNombre());
+    perfil.setApellido(nuevoPerfil.getApellido());
+    perfil.setDni(nuevoPerfil.getDni());
     perfil.setTelefono(nuevoPerfil.getTelefono());
     perfil.setDireccion(nuevoPerfil.getDireccion());
-    perfil.setFechaNacimiento(nuevoPerfil.getFechaNacimiento());
 
     return perfilRepository.save(perfil);
   }
@@ -75,15 +77,14 @@ public class PerfilService {
   // MÉTODO PRIVADO PARA MAPEAR //
   private PerfilResponseDTO mapToDTO(Perfil perfil) {
     PerfilResponseDTO dto = new PerfilResponseDTO();
-
     dto.setId(perfil.getId());
-    dto.setNombreCompleto(perfil.getNombreCompleto());
+
+    // Combine fields for the DTO if your DTO still uses "nombreCompleto"
+    dto.setNombreCompleto(perfil.getNombre() + " " + perfil.getApellido());
+
     dto.setTelefono(perfil.getTelefono());
     dto.setDireccion(perfil.getDireccion());
-    dto.setFechaNacimiento(perfil.getFechaNacimiento());
-
     dto.setUsuarioId(perfil.getUsuario().getId());
-    dto.setNombreUsuario(perfil.getUsuario().getNombreUsuario());
 
     return dto;
   }
