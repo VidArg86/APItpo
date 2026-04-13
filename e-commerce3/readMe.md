@@ -1,5 +1,8 @@
 # Arquitectura del Back-End (Spring Boot)
 
+Version Bassline:
+![Bassline](./readMeResources/Bassline.png)
+["Pump up the Bassline" -Shirako](https://open.spotify.com/intl-es/track/0vnzk4L0JyMODSqLp3pHwo?si=b5ee35a74cd14969)
 Este proyecto sigue la estructura estándar de capas de Spring Boot para mantener el código organizado y escalable:
 
 ```
@@ -7,9 +10,12 @@ src/
  └── main/
      └── java/com/uade/tpo/e_commerce3/
          ├── controller/
-         ├── service/
+         ├── dto/
+         ├── exception/
+         ├── manager/
+         ├── model/
          ├── repository/
-         └── model/
+         └── service/
 ```
 
 * **Model / Entity:** Representa la estructura de los datos y su mapeo con las tablas de la base de datos. Es la base de los objetos con los que trabajamos.
