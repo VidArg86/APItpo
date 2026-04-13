@@ -38,13 +38,7 @@ public class CarritoController {
         .orElse(ResponseEntity.notFound().build());
   }
 
-  // 3. Create a new cart (Initial setup)
-  @PostMapping
-  public Carrito createCarrito(@RequestBody Carrito carrito) {
-    return carritoService.create(carrito);
-  }
-
-  // 4. Add a product to a cart
+  // 3. Add a product to a cart
   // Path example: POST /api/carritos/1/productos/5
   @PostMapping("/{carritoId}/productos/{productoId}")
   public ResponseEntity<?> addProducto(
@@ -60,7 +54,7 @@ public class CarritoController {
     }
   }
 
-  // 5. Checkout del carrito
+  // 4. Checkout del carrito
   @PostMapping("/{id}/checkout")
   public ResponseEntity<String> checkout(@PathVariable Long id) {
     try {
@@ -71,13 +65,13 @@ public class CarritoController {
     }
   }
 
-  // 6. Remove a product from a cart
+  // 5. Remove a product from a cart
   @DeleteMapping("/{carritoId}/productos/{productoId}")
   public ResponseEntity<Carrito> removeProducto(@PathVariable Long carritoId, @PathVariable Long productoId) {
     return ResponseEntity.ok(carritoService.removeProductoFromCarrito(carritoId, productoId));
   }
 
-  // 7. Delete the entire cart
+  // 6. Delete the entire cart
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteCarrito(@PathVariable Long id) {
     carritoService.delete(id);

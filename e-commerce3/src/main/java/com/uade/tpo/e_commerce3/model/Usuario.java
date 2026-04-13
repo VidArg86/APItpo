@@ -9,6 +9,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
 import lombok.Data;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,5 +37,8 @@ public class Usuario {
   @OneToOne(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL)
   @JsonIgnore
   private Perfil perfil;
+
+  @OneToOne(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL)
+  private Carrito carrito;
 
 }
