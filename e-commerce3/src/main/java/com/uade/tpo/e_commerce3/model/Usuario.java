@@ -1,6 +1,5 @@
 package com.uade.tpo.e_commerce3.model;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,30 +16,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Column(nullable = false)
-    private String nombreUsuario;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false)
-    private String nombre;
+  @Column(unique = true, nullable = false)
+  private String email;
 
-    @Column(nullable = false)
-    private String apellido;
-    
-    @Column(unique = true, nullable = false)
-    private String email;
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @Column(nullable = false)
+  private String contraseña;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false)
-    private String contraseña;
+  @Enumerated(EnumType.STRING) // Saves as "CONSUMIDOR" in DB instead of 0
+  private Rol rol;
+  // Aca entra la relacion con Perfil //
+  @OneToOne(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL)
+  @JsonIgnore
+  private Perfil perfil;
 
-    // Aca entra la relacion con Perfil //
-    @OneToOne(mappedBy = "usuario", cascade = jakarta.persistence.CascadeType.ALL)
-    @JsonIgnore
-    private Perfil perfil;
-    
 }
