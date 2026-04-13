@@ -14,16 +14,6 @@ public class PerfilController {
   @Autowired
   private PerfilService perfilService;
 
-  // CREATE PERFIL //
-  @PostMapping("/usuario/{usuarioId}")
-  public ResponseEntity<?> crearPerfil(
-      @PathVariable Long usuarioId,
-      @RequestBody Perfil perfil) {
-
-    return ResponseEntity.ok(
-        perfilService.crearPerfil(usuarioId, perfil));
-  }
-
   // GET PERFIL POR ID (DTO) //
   @GetMapping("/{id}")
   public ResponseEntity<?> obtenerPerfil(@PathVariable Long id) {

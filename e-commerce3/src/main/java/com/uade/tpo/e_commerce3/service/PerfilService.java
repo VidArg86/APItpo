@@ -46,18 +46,18 @@ public class PerfilService {
   // UPDATE //
   public Perfil actualizarPerfil(Long id, Perfil nuevoPerfil) {
     Perfil perfil = perfilRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Perfil no encontrado"));
+            .orElseThrow(() -> new RuntimeException("Perfil no encontrado"));
 
-    // Fixed field names to match the 1.0 Model
+    // Update with the new field names from Perfil.java
     perfil.setNombre(nuevoPerfil.getNombre());
     perfil.setApellido(nuevoPerfil.getApellido());
     perfil.setDni(nuevoPerfil.getDni());
     perfil.setTelefono(nuevoPerfil.getTelefono());
     perfil.setDireccion(nuevoPerfil.getDireccion());
+    // Remove setFechaNacimiento if it was removed from Perfil.java
 
     return perfilRepository.save(perfil);
   }
-
   // DELETE //
   public void eliminarPerfil(Long id) {
     if (!perfilRepository.existsById(id)) {
@@ -74,17 +74,18 @@ public class PerfilService {
     return mapToDTO(perfil);
   }
 
-  // MÉTODO PRIVADO PARA MAPEAR //
   private PerfilResponseDTO mapToDTO(Perfil perfil) {
     PerfilResponseDTO dto = new PerfilResponseDTO();
     dto.setId(perfil.getId());
-
-    // Combine fields for the DTO if your DTO still uses "nombreCompleto"
-    dto.setNombreCompleto(perfil.getNombre() + " " + perfil.getApellido());
-
+    
+    // Combine nombre and apellido for the DTO
+    dto.setNombreCompleto(perfil.getNombre() + " " + perfil.getApellido()); 
     dto.setTelefono(perfil.getTelefono());
     dto.setDireccion(perfil.getDireccion());
+    
+    // Map the relationship and use email as the username
     dto.setUsuarioId(perfil.getUsuario().getId());
+    dto.setNombreUsuario(perfil.getUsuario().getEmail()); 
 
     return dto;
   }

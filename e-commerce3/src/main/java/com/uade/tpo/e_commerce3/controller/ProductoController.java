@@ -21,71 +21,71 @@ import com.uade.tpo.e_commerce3.service.ProductoService;
 @RequestMapping("/api/productos")
 public class ProductoController {
 
-    @Autowired
-    private ProductoService productoService;
+  @Autowired
+  private ProductoService productoService;
 
-    // POST /api/productos -> crear producto
-    @PostMapping
-    public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productoService.saveProducto(producto));
-    }
+  // POST /api/productos -> crear producto
+  @PostMapping
+  public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(productoService.saveProducto(producto));
+  }
 
-    // GET /api/productos -> todos los productos
-    @GetMapping
-    public List<Producto> getAllProductos() {
-        return productoService.getAllProductos();
-    }
+  // GET /api/productos -> todos los productos
+  @GetMapping
+  public List<Producto> getAllProductos() {
+    return productoService.getAllProductos();
+  }
 
-    // GET /api/productos/ordenados -> ordenados alfabeticamente
-    @GetMapping("/ordenados")
-    public List<Producto> getProductosOrdenados() {
-        return productoService.getProductosOrdenados();
-    }
+  // GET /api/productos/ordenados -> ordenados alfabeticamente
+  @GetMapping("/ordenados")
+  public List<Producto> getProductosOrdenados() {
+    return productoService.getProductosOrdenados();
+  }
 
-    // GET /api/productos/categoria/1 -> filtrar por id de categoria
-    @GetMapping("/categoria/{categoriaId}")
-    public ResponseEntity<?> getByCategoria(@PathVariable Long categoriaId) {
-        try {
-            return ResponseEntity.ok(productoService.getProductosByCategoria(categoriaId));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+  // GET /api/productos/categoria/1 -> filtrar por id de categoria
+  @GetMapping("/categoria/{categoriaId}")
+  public ResponseEntity<?> getByCategoria(@PathVariable Long categoriaId) {
+    try {
+      return ResponseEntity.ok(productoService.getProductosByCategoria(categoriaId));
+    } catch (RuntimeException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+  }
 
-    // POST /api/productos/1/categorias/2 -> agregar categoria a un producto
-    @PostMapping("/{productoId}/categorias/{categoriaId}")
-    public ResponseEntity<?> agregarCategoria(@PathVariable Long productoId, @PathVariable Long categoriaId) {
-        try {
-            return ResponseEntity.ok(productoService.agregarCategoria(productoId, categoriaId));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+  // POST /api/productos/1/categorias/2 -> agregar categoria a un producto
+  @PostMapping("/{productoId}/categorias/{categoriaId}")
+  public ResponseEntity<?> agregarCategoria(@PathVariable Long productoId, @PathVariable Long categoriaId) {
+    try {
+      return ResponseEntity.ok(productoService.agregarCategoria(productoId, categoriaId));
+    } catch (RuntimeException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+  }
 
-    // DELETE /api/productos/1/categorias/2 -> quitar categoria de un producto
-    @DeleteMapping("/{productoId}/categorias/{categoriaId}")
-    public ResponseEntity<?> quitarCategoria(@PathVariable Long productoId, @PathVariable Long categoriaId) {
-        try {
-            return ResponseEntity.ok(productoService.quitarCategoria(productoId, categoriaId));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+  // DELETE /api/productos/1/categorias/2 -> quitar categoria de un producto
+  @DeleteMapping("/{productoId}/categorias/{categoriaId}")
+  public ResponseEntity<?> quitarCategoria(@PathVariable Long productoId, @PathVariable Long categoriaId) {
+    try {
+      return ResponseEntity.ok(productoService.quitarCategoria(productoId, categoriaId));
+    } catch (RuntimeException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+  }
 
-    // PUT /api/productos/1 -> actualizar producto
-    @PutMapping("/{id}")
-    public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto productoDetails) {
-        try {
-            return ResponseEntity.ok(productoService.updateProducto(id, productoDetails));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+  // PUT /api/productos/1 -> actualizar producto
+  @PutMapping("/{id}")
+  public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto productoDetails) {
+    try {
+      return ResponseEntity.ok(productoService.updateProducto(id, productoDetails));
+    } catch (RuntimeException e) {
+      return ResponseEntity.notFound().build();
     }
+  }
 
-    // DELETE /api/productos/1 -> eliminar producto
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
-        productoService.deleteProducto(id);
-        return ResponseEntity.noContent().build();
-    }
+  // DELETE /api/productos/1 -> eliminar producto
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
+    productoService.deleteProducto(id);
+    return ResponseEntity.noContent().build();
+  }
 }
