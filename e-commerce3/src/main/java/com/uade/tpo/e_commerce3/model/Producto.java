@@ -1,6 +1,5 @@
 package com.uade.tpo.e_commerce3.model;
 
-
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,29 +22,25 @@ import java.util.List;
 @Table(name = "productos")
 public class Producto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false)
-    private String nombre;
+  @Column(nullable = false)
+  private String nombre;
 
-    private String descripcion;
+  private String descripcion;
 
-    @Column(nullable = false)
-    private Double precio;
+  @Column(nullable = false)
+  private Double precio;
 
-    private Integer stock;
+  private Integer stock;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "productos_categorias",
-        joinColumns = @JoinColumn(name = "producto_id"),
-        inverseJoinColumns = @JoinColumn(name = "categoria_id")
-    )
-    private List<Categoria> categorias = new ArrayList<>();
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "productos_categorias", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+  private List<Categoria> categorias = new ArrayList<>();
 
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    private String imagen;
+  @Lob
+  @Basic(fetch = FetchType.LAZY)
+  private String imagen;
 }
