@@ -26,14 +26,14 @@ import com.uade.tpo.e_commerce3.dto.RegistrationRequestDTO;
 public class UsuarioController {
 
   @Autowired
-  private UsuarioService UsuarioService;
+  private UsuarioService usuarioService;
 
   @Autowired
   private UsuarioManager usuarioManager;
 
   @GetMapping
   public List<Usuario> getAllUsuarios() {
-    return UsuarioService.getAllUsuarios();
+    return usuarioService.getAllUsuarios();
   }
 
   // Endpoint para obtener un usuario específico por su ID
@@ -41,7 +41,7 @@ public class UsuarioController {
   public ResponseEntity<?> obtenerUsuarioPorId(@PathVariable Long id) {
     try {
       // Busca el usuario en el service
-      Usuario usuario = UsuarioService.obtenerUsuarioPorId(id);
+      Usuario usuario = usuarioService.obtenerUsuarioPorId(id);
 
       // Devuelve HTTP 200 con el usuario
       return ResponseEntity.ok(usuario);
@@ -63,12 +63,14 @@ public class UsuarioController {
       user.setContraseña(registrationData.getContraseña());
 
       // Delegate coordination to the Manager
-      Usuario newUser = usuarioManager.registrarConsumidor(
-          user,
-          registrationData.getNombre(),
-          registrationData.getApellido(),
-          registrationData.getDni());
-
+    Usuario newUser = usuarioManager.registrarConsumidor(
+      user,
+      registrationData.getNombre(),
+      registrationData.getApellido(),
+      registrationData.getDni(),
+      registrationData.getTelefono(),  
+      registrationData.getDireccion()  
+    );
       return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     } catch (RuntimeException e) {
       return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
@@ -78,7 +80,7 @@ public class UsuarioController {
   @PutMapping("/{id}")
   public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuarioDetails) {
     try {
-      Usuario updatedUsuario = UsuarioService.updateUsuario(id, usuarioDetails);
+      Usuario updatedUsuario = usuarioService.updateUsuario(id, usuarioDetails);
       return ResponseEntity.ok(updatedUsuario);
     } catch (RuntimeException e) {
       return ResponseEntity.notFound().build();
@@ -87,13 +89,13 @@ public class UsuarioController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
-    UsuarioService.deleteUsuario(id);
+    usuarioService.deleteUsuario(id);
     return ResponseEntity.noContent().build();
   }
 
   @PostMapping("/login")
   public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-    boolean success = UsuarioService.verifyLogin(request.getEmail(), request.getContraseña());
+    boolean success = usuarioService.verifyLogin(request.getEmail(), request.getContraseña());
 
     if (success) {
       return ResponseEntity.ok("Login exitoso.");
