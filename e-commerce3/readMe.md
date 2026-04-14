@@ -1,5 +1,6 @@
 # Arquitectura del Back-End (Spring Boot)
 
+---
 Este proyecto sigue la estructura estándar de capas de Spring Boot para mantener el código organizado y escalable:
 
 ```
@@ -7,9 +8,12 @@ src/
  └── main/
      └── java/com/uade/tpo/e_commerce3/
          ├── controller/
-         ├── service/
+         ├── dto/
+         ├── exception/
+         ├── manager/
+         ├── model/
          ├── repository/
-         └── model/
+         └── service/
 ```
 
 * **Model / Entity:** Representa la estructura de los datos y su mapeo con las tablas de la base de datos. Es la base de los objetos con los que trabajamos.
@@ -43,32 +47,60 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 | Método | Endpoint | Descripción | Cuerpo / Parámetros | Estado Exitoso |
 | :--- | :--- | :--- | :--- | :--- |
 | `GET` | `/api/productos` | Obtiene la lista de todos los productos. | Ninguno | `200 OK` |
+| `GET` | `/api/productos/ordenados` | Obtiene productos ordenados alfabéticamente. | Ninguno | `200 OK` |
+| `GET` | `/api/productos/categoria/{cId}` | Filtra productos por ID de categoría. | `cId` (Ruta) | `200 OK` |
 | `POST` | `/api/productos` | Crea un nuevo producto. | `JSON (Producto)` | `201 Created` |
+| `POST` | `/api/productos/{pId}/categorias/{cId}` | Asocia una categoría a un producto. | `pId`, `cId` (Ruta) | `200 OK` |
 | `PUT` | `/api/productos/{id}` | Actualiza un producto existente. | `ID` + `JSON (Datos)` | `200 OK` |
 | `DELETE` | `/api/productos/{id}` | Elimina un producto por su ID. | `ID` | `204 No Content` |
-
+| `DELETE` | `/api/productos/{pId}/categorias/{cId}` | Quita una categoría de un producto. | `pId`, `cId` (Ruta) | `200 OK` |
 
 ### Endpoints de la API (Usuarios & Auth)
 
 | Método | Endpoint | Descripción | Cuerpo (JSON) | Respuestas HTTP |
 | :--- | :--- | :--- | :--- | :--- |
 | `GET` | `/api/usuarios` | Lista todos los usuarios. | Ninguno | `200 OK` |
-| `POST` | `/api/usuarios` | Registra un nuevo usuario. | `Usuario` | `201 Created`, `409 Conflict` |
-| `PUT` | `/api/usuarios/{id}` | Actualiza datos de un usuario. | `Usuario` | `200 OK`, `404 Not Found` |
+| `GET` | `/api/usuarios/{id}` | Obtiene un usuario específico por ID. | `id` (Ruta) | `200 OK`, `404` |
+| `POST` | `/api/usuarios/registrar` | Registro coordinado de consumidor (Usuario + Perfil). | `RegistrationRequestDTO` | `201 Created`, `409` |
+| `PUT` | `/api/usuarios/{id}` | Actualiza datos de un usuario. | `Usuario` | `200 OK`, `404` |
 | `DELETE` | `/api/usuarios/{id}`| Elimina un usuario por ID. | Ninguno | `204 No Content` |
 | `POST` | `/api/usuarios/login`| Autenticación de usuario. | `LoginRequest` | `200 OK`, `401 Unauthorized` |
 
 ### Endpoints de la API (Carrito de Compras)
 
-| Método | Endpoint | Descripción | Parámetros de Ruta | Estado Exitoso |
+| Método | Endpoint | Descripción | Parámetros | Estado Exitoso |
 | :--- | :--- | :--- | :--- | :--- |
 | `GET` | `/api/carritos` | Lista todos los carritos del sistema. | Ninguno | `200 OK` |
 | `GET` | `/api/carritos/{id}` | Obtiene el detalle de un carrito específico. | `id` (Carrito) | `200 OK` |
-| `POST` | `/api/carritos` | Inicializa un nuevo carrito. | Ninguno | `201 Created` |
-| `POST` | `/api/carritos/{cId}/productos/{pId}` | Agrega un producto al carrito. | `cId`, `pId` | `200 OK` |
-| `POST` | `/api/carritos/{id}/checkout` | Realiza el checkout, descuenta stock y vacía el carrito. | `id` (Carrito) | `200 Ok` |
+| `POST` | `/api/carritos/{cId}/productos/{pId}` | Agrega un producto al carrito (cantidad opcional). | `cId`, `pId` + `cantidad` (Query) | `200 OK` |
+| `POST` | `/api/carritos/{id}/checkout` | Realiza el checkout y procesa la compra. | `id` (Carrito) | `200 OK` |
 | `DELETE` | `/api/carritos/{cId}/productos/{pId}` | Quita un producto del carrito. | `cId`, `pId` | `200 OK` |
 | `DELETE` | `/api/carritos/{id}` | Elimina el carrito por completo. | `id` (Carrito) | `204 No Content` |
+
+### Endpoints de la API (Perfil)
+
+| Método | Endpoint | Descripción | Parámetros de Ruta | Estado Exitoso |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/perfiles/{id}` | Obtiene el detalle (DTO) de un perfil por su ID. | `id` (Perfil) | `200 OK` |
+| `GET` | `/api/perfiles` | Lista todos los perfiles registrados. | Ninguno | `200 OK` |
+| `GET` | `/api/perfiles/usuario/{id}` | Obtiene el perfil asociado a un ID de usuario. | `id` (Usuario) | `200 OK` |
+| `PUT` | `/api/perfiles/{id}` | Actualiza la información de un perfil existente. | `id` (Perfil) | `200 OK` |
+| `DELETE` | `/api/perfiles/{id}` | Elimina un perfil del sistema. | `id` (Perfil) | `204 No Content` |
+
+### Endpoints de la API (Categorías)
+
+| Método | Endpoint | Descripción | Cuerpo / Parámetros | Estado Exitoso |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/categorias` | Lista todas las categorías registradas. | Ninguno | `200 OK` |
+| `GET` | `/api/categorias/{id}` | Obtiene el detalle de una categoría específica. | `id` (Ruta) | `200 OK` |
+| `POST` | `/api/categorias` | Crea una nueva categoría. | `JSON (Categoria)` | `201 Created` |
+| `DELETE` | `/api/categorias/{id}` | Elimina una categoría por su ID. | `id` (Ruta) | `204 No Content` |
+
+## Grafico visual para el back-end:
+
+![Ecosistema General](./readMeResources/ecosistema%20general.png)
+![Producto Ecosistema](./readMeResources/producto%20ecosistema.png)
+![Usuario Ecosistema](./readMeResources/usuario%20ecosistema.png)
 
 ## Créditos y Agradecimientos
 

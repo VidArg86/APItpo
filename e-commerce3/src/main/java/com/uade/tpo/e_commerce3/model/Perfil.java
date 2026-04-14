@@ -8,20 +8,17 @@ import lombok.Data;
 @Table(name = "perfiles")
 public class Perfil {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String nombreCompleto;
+  private String nombre;
+  private String apellido;
+  private String dni;
+  private String telefono;
+  private String direccion;
 
-    private String telefono;
-
-    private String direccion;
-
-    private String fechaNacimiento;
-
-    // Aca entra: relación con Usuario //
-    @OneToOne
-    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
-    private Usuario usuario;
+  @OneToOne
+  @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+  private Usuario usuario;
 }
