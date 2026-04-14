@@ -26,4 +26,12 @@ public class GlobalExceptionHandler {
     body.put("mensaje", ex.getMessage());
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
+
+@ExceptionHandler(EmailAlreadyExistsException.class)
+public ResponseEntity<Object> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("error", "Email duplicado");
+    body.put("mensaje", ex.getMessage());
+    return new ResponseEntity<>(body, HttpStatus.CONFLICT); // 409
+}
 }

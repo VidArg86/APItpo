@@ -28,7 +28,7 @@ public class UsuarioManager {
 
         // 1. Security: Hash + Pepper
         usuario.setRol(Rol.CONSUMIDOR);
-        usuario.setContraseña(passwordEncoder.encode(usuario.getContraseña() + pepper));
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword() + pepper));
 
         // 2. Link Carrito
         Carrito nuevoCarrito = new Carrito();

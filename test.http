@@ -1,0 +1,147 @@
+### ============================================================
+###  TESTS DE AUTENTICACIÓN  -  APItpo E-Commerce
+###  Usar con: VS Code (REST Client) o IntelliJ HTTP Client
+### ============================================================
+
+@base = http://localhost:8080
+
+
+### ──────────────────────────────────────────────────────────
+### 1. REGISTRAR usuario nuevo  →  devuelve token JWT
+### ──────────────────────────────────────────────────────────
+POST {{base}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "juan@gmail.com",
+  "contraseña": "1234",
+  "nombre": "Juan",
+  "apellido": "Perez",
+  "dni": "12345678",
+  "telefono": "1122334455",
+  "direccion": "Av. Corrientes 1234"
+}
+
+### Respuesta esperada: 200 OK
+### Body: eyJhbGciOiJIUzI1NiJ9.eyJ...   ← ese es tu token JWT
+
+
+### ──────────────────────────────────────────────────────────
+### 2. REGISTRAR un segundo usuario (para probar duplicados)
+### ──────────────────────────────────────────────────────────
+POST {{base}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "juan@gmail.com",
+  "contraseña": "1234",
+  "nombre": "Juan",
+  "apellido": "Perez",
+  "dni": "12345678",
+  "telefono": "1122334455",
+  "direccion": "Av. Corrientes 1234"
+}
+
+### Respuesta esperada: 409 / RuntimeException "El email ya está registrado."
+
+
+### ──────────────────────────────────────────────────────────
+### 3. LOGIN con el usuario registrado  →  devuelve token JWT
+### ──────────────────────────────────────────────────────────
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "juan@gmail.com",
+  "contraseña": "1234"
+}
+
+### Respuesta esperada: 200 OK
+### Body: eyJhbGciOiJIUzI1NiJ9.eyJ...   ← token JWT
+
+
+### ──────────────────────────────────────────────────────────
+### 4. LOGIN con contraseña incorrecta
+### ──────────────────────────────────────────────────────────
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "juan@gmail.com",
+  "contraseña": "wrongpassword"
+}
+
+### Respuesta esperada: 401 Unauthorized / 403 Forbidden
+
+
+### ──────────────────────────────────────────────────────────
+### 5. VER PRODUCTOS SIN TOKEN  (ruta pública)
+### ──────────────────────────────────────────────────────────
+GET {{base}}/api/productos
+
+### Respuesta esperada: 200 OK (no requiere token)
+
+
+### ──────────────────────────────────────────────────────────
+### 6. CREAR PRODUCTO SIN TOKEN  (debe fallar)
+### ──────────────────────────────────────────────────────────
+POST {{base}}/api/productos
+Content-Type: application/json
+
+{
+  "nombre": "Notebook Gamer",
+  "descripcion": "16GB RAM, RTX 4060",
+  "precio": 350000.00,
+  "stock": 5
+}
+
+### Respuesta esperada: 401 / 403  ← la seguridad JWT está funcionando
+
+
+### ──────────────────────────────────────────────────────────
+### 7. CREAR PRODUCTO CON TOKEN (primero hacer login y pegar token acá)
+### ──────────────────────────────────────────────────────────
+### INSTRUCCIONES:
+###   1. Ejecutá el request #3 (login)
+###   2. Copiá el token del body de respuesta
+###   3. Pegalo en la línea @token de abajo (reemplazando el texto)
+###   4. Ejecutá este request
+
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9WRU5ERURPUiIsImlhdCI6MTc3NjE0MzkxOCwiZXhwIjoxNzc2MjMwMzE4fQ.pipyOQjXxGjxJCxaPbz2Kq0NYeD9BGidcIMV607QndI
+POST {{base}}/api/productos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nombre": "Notebook Gamer",
+  "descripcion": "16GB RAM, RTX 4060",
+  "precio": 350000.00,
+  "stock": 5
+}
+
+### Respuesta esperada: 403 si el usuario es CONSUMIDOR (no tiene rol VENDEDOR)
+### Para probar crear productos, el usuario debe tener rol VENDEDOR o ADMIN
+### (cambiar manualmente en la BD: UPDATE usuarios SET rol='VENDEDOR' WHERE email='juan@gmail.com')
+
+
+### Agregar producto al carrito
+POST {{base}}/api/carritos/1/productos/1
+Authorization: Bearer {{token}}
+
+
+### ──────────────────────────────────────────────────────────
+### 8. VER CARRITO (requiere token)
+### ──────────────────────────────────────────────────────────
+GET {{base}}/api/carritos/1
+Authorization: Bearer {{token}}
+
+### Respuesta esperada: 200 OK con el carrito del usuario
+
+
+### ──────────────────────────────────────────────────────────
+### 9. VER USUARIOS (solo ADMIN → esperar 403 con rol CONSUMIDOR)
+### ──────────────────────────────────────────────────────────
+GET {{base}}/api/usuarios
+Authorization: Bearer {{token}}
+
+### Respuesta esperada: 403 Forbidden (solo accede rol ADMIN)
