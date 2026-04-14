@@ -70,10 +70,15 @@ public class CarritoController {
     return ResponseEntity.ok(carritoService.removeProductoFromCarrito(carritoId, productoId));
   }
 
-  // 6. Delete the entire cart
+  // 6. elimina el carrito completo (no solo vaciarlo)
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteCarrito(@PathVariable Long id) {
     carritoService.delete(id);
     return ResponseEntity.noContent().build();
   }
+
+  @DeleteMapping("/{id}/vaciar") //este solo vacia el carrito, no lo borra
+public ResponseEntity<Carrito> vaciarCarrito(@PathVariable Long id) {
+    return ResponseEntity.ok(carritoService.clearCarrito(id));
+}
 }
