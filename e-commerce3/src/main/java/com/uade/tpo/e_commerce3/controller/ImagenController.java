@@ -75,10 +75,10 @@ public class ImagenController {
             @PathVariable Long id) {
 
         Imagen img = imagenService.getImagen(id);
-        if (!img.getProducto().getId().equals(productoId) ||img.getProducto().getId().equals(productoId)) {
-            imagenService.deleteImagen(id);
+        if(!img.getProducto().getId().equals(productoId))  {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
+        imagenService.deleteImagen(id);
         return ResponseEntity.noContent().build();
     }
 }
