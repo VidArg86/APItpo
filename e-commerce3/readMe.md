@@ -96,6 +96,16 @@ Puedes encontrar el archivo `test.http` en la carpeta raíz para replicar las pr
 | `POST` | `/api/categorias` | Crea una nueva categoría. | `JSON (Categoria)` | `201 Created` |
 | `DELETE` | `/api/categorias/{id}` | Elimina una categoría por su ID. | `id` (Ruta) | `204 No Content` |
 
+
+## Endpoints de la API (Imagenes)
+
+| Método | Endpoint | Descripción | Parámetros / Cuerpo | Respuestas HTTP |
+| :--- | :--- | :--- | :--- | :--- |
+| POST | /api/productos/{productoId}/imagenes | Sube una nueva imagen asociada a un producto. | @RequestParam("file") (Multipart), productoId (Ruta) | 201 Created, 500 Error de E/S |
+| GET | /api/productos/{productoId}/imagenes/{id} | Obtiene el contenido binario de una imagen específica. | productoId (Ruta), id (Ruta) | 200 OK, 403 Forbidden |
+| PUT | /api/productos/{productoId}/imagenes/{id} | Actualiza el nombre o metadatos de una imagen existente. | @RequestBody String nuevoNombre, id (Ruta) | 200 OK, 403 Forbidden |
+| DELETE | /api/productos/{productoId}/imagenes/{id} | Elimina una imagen del sistema. | productoId (Ruta), id (Ruta) | 204 No Content, 404 Not Found |
+
 ## Grafico visual para el back-end:
 
 ![Ecosistema General](./readMeResources/ecosistema%20general.png)
