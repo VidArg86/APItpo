@@ -52,6 +52,11 @@ public class ProductoController {
     }
   }
 
+  @GetMapping("/{id}")
+  public Object getProductoById(@PathVariable Long id) {
+      return productoService.getProductoById(id);
+  }
+
   // POST /api/productos/1/categorias/2 -> agregar categoria a un producto
   @PostMapping("/{productoId}/categorias/{categoriaId}")
   public ResponseEntity<?> agregarCategoria(@PathVariable Long productoId, @PathVariable Long categoriaId) {

@@ -1,8 +1,10 @@
 package com.uade.tpo.e_commerce3.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.e_commerce3.model.Categoria;
@@ -86,5 +88,9 @@ public class ProductoService {
     // Ordenados alfabeticamente
     public List<Producto> getProductosOrdenados() {
         return productoRepository.findAllByOrderByNombreAsc();
+    }
+
+    public Optional<Producto> getProductoById(Long id) {
+        return productoRepository.findById(id);
     }
 }
