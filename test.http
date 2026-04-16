@@ -107,8 +107,7 @@ Content-Type: application/json
 ###   3. Pegalo en la línea @token de abajo (reemplazando el texto)
 ###   4. Ejecutá este request
 
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9WRU5ERURPUiIsImlhdCI6MTc3NjE0MzkxOCwiZXhwIjoxNzc2MjMwMzE4fQ.pipyOQjXxGjxJCxaPbz2Kq0NYeD9BGidcIMV607QndI
-POST {{base}}/api/productos
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9DT05TVU1JRE9SIiwiaWF0IjoxNzc2MzIwNTYzLCJleHAiOjE3NzY0MDY5NjN9.vN0TWbkUvZFRClPngVQ_3jw5i3Z9HBC9a1QWaQcOlT4
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -145,3 +144,15 @@ GET {{base}}/api/usuarios
 Authorization: Bearer {{token}}
 
 ### Respuesta esperada: 403 Forbidden (solo accede rol ADMIN)
+
+### ──────────────────────────────────────────────────────────
+### 10. PROBAR AGREGAR AL CARRITO (Con DTO)
+### ──────────────────────────────────────────────────────────
+POST {{base}}/api/carritos/1/productos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "idProducto": "1",
+  "cantidad": 2
+}

@@ -21,6 +21,7 @@ GET http://localhost:8080/api/categorias/1
 POST http://localhost:8080/api/categorias
 Content-Type: application/json
 
+
 {
     "nombre": "Electronica"
 }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.uade.tpo.e_commerce3.dto.CarritoSolicitudDTO;
+import com.uade.tpo.e_commerce3.dto.ProductoDetalleDTO;
 import com.uade.tpo.e_commerce3.model.Producto;
 import com.uade.tpo.e_commerce3.service.ProductoService;
 
@@ -88,4 +90,10 @@ public class ProductoController {
     productoService.deleteProducto(id);
     return ResponseEntity.noContent().build();
   }
+
+  @PostMapping("/consulta-carrito")
+    public ProductoDetalleDTO obtenerDetalleParaCarrito(@RequestBody CarritoSolicitudDTO solicitud) {
+        // Llamamos al nuevo método que agregamos en el Service
+        return productoService.obtenerInformacionParaCarrito(solicitud);
+    }
 }
