@@ -37,7 +37,8 @@ public class Producto {
   @JoinTable(name = "productos_categorias", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
   private List<Categoria> categorias = new ArrayList<>();
 
-  @Lob
-  @Basic(fetch = FetchType.LAZY)
-  private String imagen;
+
+  // Relational Upgrade: One product has many images
+  @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<Imagen> imagenes;
 }
