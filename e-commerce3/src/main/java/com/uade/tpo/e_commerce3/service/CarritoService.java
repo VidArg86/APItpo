@@ -6,12 +6,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.uade.tpo.e_commerce3.dto.CarritoResponseDTO;
+import com.uade.tpo.e_commerce3.exception.InsufficientStockException;
+import com.uade.tpo.e_commerce3.exception.ResourceNotFoundException;
 import com.uade.tpo.e_commerce3.model.Carrito;
 import com.uade.tpo.e_commerce3.model.ItemCarrito;
 import com.uade.tpo.e_commerce3.model.Producto;
 import com.uade.tpo.e_commerce3.repository.CarritoRepository;
 import com.uade.tpo.e_commerce3.repository.ProductoRepository;
-import com.uade.tpo.e_commerce3.exception.*;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -153,5 +156,32 @@ public class CarritoService {
     carritoRepository.save(carrito);
 
     return "Checkout exitoso. Total abonado: $" + totalFinal;
+  }
+
+  private CarritoResponseDTO convertirADTO(Carrito carrito) {
+      CarritoResponseDTO dto = new CarritoResponseDTO();
+      dto.setId(carrito.getId());
+      dto.setUsuarioId(carrito.getUsuario().getId()); // Solo el ID, no el objeto Usuario completo [cite: 234]
+      
+      // Mapeamos los ítems individuales
+      List<ItemCarritoDTO> itemDTOs = carrito.getItems().stream()
+              .map(item -> {
+                  ItemCarritoDTO itemDTO = new ItemCarritoDTO();
+                  itemDTO.setProductoId(item.getProducto().getId());
+                  itemDTO.setProductoNombre(item.getProducto().getNombre());
+                  itemDTO.setCantidad(item.getCantidad());
+                  itemDTO.setPrecioUnitario(item.getProducto().getPrecio());
+                  return itemDTO;
+              }).toList();
+              
+      dto.setItems(itemDTOs);
+      
+      // Calculamos el total sumando (cantidad * precio) de cada ítem [cite: 103]
+      Double total = itemDTOs.stream()
+              .mapToDouble(i -> i.getCantidad() * i.getPrecioUnitario())
+              .sum();
+      dto.setPrecioTotal(total);
+      
+      return dto;
   }
 }

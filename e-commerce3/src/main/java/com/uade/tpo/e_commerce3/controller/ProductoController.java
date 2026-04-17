@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.uade.tpo.e_commerce3.dto.ProductoResponseDTO;
 import com.uade.tpo.e_commerce3.model.Producto;
 import com.uade.tpo.e_commerce3.service.ProductoService;
 
@@ -92,5 +93,21 @@ public class ProductoController {
   public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
     productoService.deleteProducto(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping
+  public ResponseEntity<List<ProductoResponseDTO>> obtenerTodos() {
+      // El servicio ya se encarga de convertir la lista a DTOs
+      return ResponseEntity.ok(productoService.listarTodos());
+  }
+  @GetMapping("/{id}")
+  public ResponseEntity<ProductoResponseDTO> obtenerPorId(@PathVariable Long id) {
+      // Si no existe, el Service lanza ResourceNotFoundException y el Handler responde 404
+      return ResponseEntity.ok(productoService.obtenerPorId(id));
+  }
+
+  @GetMapping("/categoria/{categoriaId}")
+  public ResponseEntity<List<ProductoResponseDTO>> obtenerPorCategoria(@PathVariable Long categoriaId) {
+      return ResponseEntity.ok(productoService.listarPorCategoria(categoriaId));
   }
 }

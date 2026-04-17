@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.uade.tpo.e_commerce3.dto.CarritoResponseDTO;
 import com.uade.tpo.e_commerce3.model.Carrito;
 import com.uade.tpo.e_commerce3.service.CarritoService;
 
@@ -78,7 +79,26 @@ public class CarritoController {
   }
 
   @DeleteMapping("/{id}/vaciar") //este solo vacia el carrito, no lo borra
-public ResponseEntity<Carrito> vaciarCarrito(@PathVariable Long id) {
+  public ResponseEntity<Carrito> vaciarCarrito(@PathVariable Long id) {
     return ResponseEntity.ok(carritoService.clearCarrito(id));
-}
+  }
+
+  @GetMapping("/{usuarioId}")
+  public ResponseEntity<CarritoResponseDTO> obtenerCarrito(@PathVariable Long usuarioId) {
+      return ResponseEntity.ok(carritoService.obtenerCarritoPorUsuario(usuarioId));
+  }
+
+  @PostMapping("/{usuarioId}/agregar")
+  public ResponseEntity<CarritoResponseDTO> agregarProducto(
+          @PathVariable Long usuarioId,
+          @RequestParam Long productoId,
+          @RequestParam Integer cantidad) {
+      return ResponseEntity.ok(carritoService.agregarProducto(usuarioId, productoId, cantidad));
+  }
+
+  @PostMapping("/{usuarioId}/checkout")
+  public ResponseEntity<String> realizarCheckout(@PathVariable Long usuarioId) {
+      carritoService.procesarCompra(usuarioId);
+      return ResponseEntity.ok("Compra realizada con éxito. El stock ha sido actualizado.");
+  }
 }

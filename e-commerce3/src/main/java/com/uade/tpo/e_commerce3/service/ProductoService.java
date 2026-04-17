@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.uade.tpo.e_commerce3.dto.ProductoResponseDTO;
 import com.uade.tpo.e_commerce3.model.Categoria;
+import com.uade.tpo.e_commerce3.model.Imagen;
 import com.uade.tpo.e_commerce3.model.Producto;
 import com.uade.tpo.e_commerce3.repository.CategoriaRepository;
 import com.uade.tpo.e_commerce3.repository.ProductoRepository;
@@ -92,5 +93,27 @@ public class ProductoService {
 
     public Optional<Producto> getProductoById(Long id) {
         return productoRepository.findById(id);
+    }
+    
+
+    private ProductoResponseDTO convertirADTO(Producto producto) {
+        ProductoResponseDTO dto = new ProductoResponseDTO();
+        dto.setId(producto.getId());
+        dto.setNombre(producto.getNombre());
+        dto.setDescripcion(producto.getDescripcion());
+        dto.setPrecio(producto.getPrecio());
+        dto.setStock(producto.getStock());
+        
+        // Extraemos solo los nombres de las categorías para evitar recursividad [cite: 173]
+        dto.setNombresCategorias(producto.getCategorias().stream()
+                .map(Categoria::getNombre)
+                .toList());
+                
+        // Extraemos solo los IDs de las imágenes [cite: 170]
+        dto.setImagenesIds(producto.getImagenes().stream()
+                .map(Imagen::getId)
+                .toList());
+                
+        return dto;
     }
 }

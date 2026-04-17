@@ -107,7 +107,7 @@ Content-Type: application/json
 ###   3. Pegalo en la línea @token de abajo (reemplazando el texto)
 ###   4. Ejecutá este request
 
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9WRU5ERURPUiIsImlhdCI6MTc3NjE0MzkxOCwiZXhwIjoxNzc2MjMwMzE4fQ.pipyOQjXxGjxJCxaPbz2Kq0NYeD9BGidcIMV607QndI
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9WRU5ERURPUiIsImlhdCI6MTc3NjQwNDU4NCwiZXhwIjoxNzc2NDkwOTg0fQ.f2sEpRYcZMikgarrRTrw5W9Aok4zg774h4SzLjmOqPU
 POST {{base}}/api/productos
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -145,3 +145,46 @@ GET {{base}}/api/usuarios
 Authorization: Bearer {{token}}
 
 ### Respuesta esperada: 403 Forbidden (solo accede rol ADMIN)
+
+
+### NUEVOS ENDPOINTS REFACTORIZADOS (PR-07 y CR-05)
+
+
+### ──────────────────────────────────────────────────────────
+### 10. LISTAR PRODUCTOS (Formato ProductoResponseDTO)
+### ──────────────────────────────────────────────────────────
+GET {{base}}/api/productos
+# No requiere token según tu configuración pública [cite: 219]
+
+### Respuesta esperada: 200 OK 
+### Body: Lista de productos con "nombresCategorias" e "imagenesIds" [cite: 172, 173]
+
+
+### ──────────────────────────────────────────────────────────
+### 11. VER DETALLE DE PRODUCTO POR ID
+### ──────────────────────────────────────────────────────────
+GET {{base}}/api/productos/1
+
+### Respuesta esperada: 200 OK [cite: 220]
+### Si no existe: 404 Not Found (vía GlobalExceptionHandler) [cite: 71, 79]
+
+
+
+### ──────────────────────────────────────────────────────────
+### 13. VER MI CARRITO (Formato CarritoResponseDTO)
+### ──────────────────────────────────────────────────────────
+GET {{base}}/api/carritos/1
+Authorization: Bearer {{token}}
+
+### Respuesta esperada: 200 OK
+### Body: { "id": 1, "precioTotal": 700000.0, "items": [...], "usuarioId": 1 } [cite: 224]
+
+
+### ──────────────────────────────────────────────────────────
+### 14. REALIZAR CHECKOUT (Procesar compra)
+### ──────────────────────────────────────────────────────────
+POST {{base}}/api/carritos/1/checkout
+Authorization: Bearer {{token}}
+
+### Respuesta esperada: 200 OK "Compra realizada con éxito..." [cite: 226]
+### Si no hay stock: 400 Bad Request "Error de Stock" [cite: 72, 227]
