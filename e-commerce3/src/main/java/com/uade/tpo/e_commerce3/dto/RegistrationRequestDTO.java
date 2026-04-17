@@ -8,7 +8,7 @@ public class RegistrationRequestDTO {
     private String email;
 
     @JsonProperty("contraseña")  // ← esto le dice a Jackson cómo leer el campo del JSON
-    private String passworld;
+    private String password;
 
     private String nombre;
     private String apellido;

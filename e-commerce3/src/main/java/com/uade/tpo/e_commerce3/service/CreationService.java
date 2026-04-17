@@ -15,8 +15,6 @@ import com.uade.tpo.e_commerce3.model.Carrito;
 import com.uade.tpo.e_commerce3.model.Perfil;
 import com.uade.tpo.e_commerce3.model.Rol;
 import com.uade.tpo.e_commerce3.model.Usuario;
-import com.uade.tpo.e_commerce3.repository.CarritoRepository;
-import com.uade.tpo.e_commerce3.repository.PerfilRepository;
 import com.uade.tpo.e_commerce3.repository.UsuarioRepository;
 import com.uade.tpo.e_commerce3.security.JwtUtil;
  
@@ -29,61 +27,69 @@ import lombok.RequiredArgsConstructor;
 public class CreationService {
  
     private final UsuarioRepository usuarioRepository;
-    private final PerfilRepository perfilRepository;
-    private final CarritoRepository carritoRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
  
-    /**
-     * Registra un nuevo usuario CONSUMIDOR con su Perfil y Carrito asociados.
-     * Devuelve directamente el token JWT para que pueda operar sin hacer login extra.
-     */
     public String register(RegistrationRequestDTO request) {
- 
+        return registerWithRole(request, Rol.CONSUMIDOR);
+    }
+
+    public String registerVendedor(RegistrationRequestDTO request) {
+        return registerWithRole(request, Rol.VENDEDOR);
+    }
+
+    public String registerAdmin(RegistrationRequestDTO request) {
+        return registerWithRole(request, Rol.ADMIN);
+    }
+
+    /**
+     * Lógica centralizada para crear usuarios con sus dependencias en cascada.
+     */
+    private String registerWithRole(RegistrationRequestDTO request, Rol rol) {
         if (usuarioRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException(request.getEmail());
         }
  
-        // 1. Crear usuario con contraseña encriptada
+        // 1. Crear usuario
         Usuario usuario = Usuario.builder()
                 .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassworld()))
-                .rol(Rol.CONSUMIDOR)
+                .password(passwordEncoder.encode(request.getPassworld())) 
+                .rol(rol)
                 .build();
  
-        Usuario savedUsuario = usuarioRepository.save(usuario);
- 
-        // 2. Crear y vincular el Perfil
+        // 2. Crear Perfil y establecer relación bidireccional
         Perfil perfil = new Perfil();
         perfil.setNombre(request.getNombre());
         perfil.setApellido(request.getApellido());
         perfil.setDni(request.getDni());
         perfil.setTelefono(request.getTelefono());
         perfil.setDireccion(request.getDireccion());
-        perfil.setUsuario(savedUsuario);
-        perfilRepository.save(perfil);
+        
+        perfil.setUsuario(usuario);
+        usuario.setPerfil(perfil);
  
-        // 3. Crear y vincular el Carrito
-        Carrito carrito = new Carrito();
-        carrito.setUsuario(savedUsuario);
-        carrito.setPrecioTotal(0.0);
-        carritoRepository.save(carrito);
+        // 3. Crear Carrito SOLO si el usuario es un CONSUMIDOR
+        if (rol == Rol.CONSUMIDOR) {
+            Carrito carrito = new Carrito();
+            carrito.setPrecioTotal(0.0);
+            
+            carrito.setUsuario(usuario);
+            usuario.setCarrito(carrito);
+        }
  
-        // 4. Generar y devolver el token JWT
-        Set<String> roles = savedUsuario.getAuthorities().stream()
+        // 4. PERSISTENCIA EN CASCADA: Un solo save guarda el Usuario, su Perfil y su Carrito (si aplica).
+        usuarioRepository.save(usuario);
+ 
+        // 5. Generar token JWT
+        Set<String> roles = usuario.getAuthorities().stream()
                 .map(a -> a.getAuthority())
                 .collect(Collectors.toSet());
  
-        return jwtUtil.generateToken(savedUsuario.getEmail(), roles);
+        return jwtUtil.generateToken(usuario.getEmail(), roles);
     }
  
-    /**
-     * Valida credenciales y devuelve un token JWT si son correctas.
-     */
     public String authenticate(LoginRequest request) {
- 
-        // Spring Security verifica email + contraseña contra la BD automáticamente
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),

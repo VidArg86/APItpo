@@ -19,10 +19,22 @@ public class AuthenticationController {
  
     private final CreationService authenticationService;
  
-    // POST /api/auth/register  →  registra usuario y devuelve JWT
+    // POST /api/auth/register  →  registra usuario CONSUMIDOR y devuelve JWT
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegistrationRequestDTO request) {
         return ResponseEntity.ok(authenticationService.register(request));
+    }
+
+    // POST /api/auth/register/vendedor  →  registra VENDEDOR y devuelve JWT
+    @PostMapping("/register/vendedor")
+    public ResponseEntity<String> registerVendedor(@RequestBody RegistrationRequestDTO request) {
+        return ResponseEntity.ok(authenticationService.registerVendedor(request));
+    }
+
+    // POST /api/auth/register/admin  →  registra ADMIN y devuelve JWT
+    @PostMapping("/register/admin")
+    public ResponseEntity<String> registerAdmin(@RequestBody RegistrationRequestDTO request) {
+        return ResponseEntity.ok(authenticationService.registerAdmin(request));
     }
  
     // POST /api/auth/login  →  valida credenciales y devuelve JWT
