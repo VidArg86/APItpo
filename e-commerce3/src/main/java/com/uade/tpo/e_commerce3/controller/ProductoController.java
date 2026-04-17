@@ -2,6 +2,8 @@ package com.uade.tpo.e_commerce3.controller;
 
 import java.util.List;
 
+import com.uade.tpo.e_commerce3.dto.CarritoSolicitudDTO;
+import com.uade.tpo.e_commerce3.dto.ProductoDetalleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,5 +94,12 @@ public class ProductoController {
   public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
     productoService.deleteProducto(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/consulta-carrito")
+  public ProductoDetalleDTO obtenerDetalleParaCarrito(@RequestBody CarritoSolicitudDTO solicitud) {
+    // Llamamos al nuevo método que agregamos en el Service
+
+    return productoService.obtenerInformacionParaCarrito(solicitud);
   }
 }

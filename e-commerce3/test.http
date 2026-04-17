@@ -1,11 +1,11 @@
-This was tested using REST client by Huachao Mao
+### This was tested using REST client by Huachao Mao
 
-Using the following Scripts
+### Using the following Scripts
 
 
---------------------------------------------------------
+### --------------------------------------------------------
 
-Categorias
+### Categorias
 
 ### 1. GET ALL CATEGORIAS
 GET http://localhost:8080/api/categorias
@@ -50,9 +50,9 @@ DELETE http://localhost:8080/api/categorias/1
 
 ###
 
---------------------------------------------------------
+### --------------------------------------------------------
 
-Productos
+### Productos
 
 ### 1. GET ALL PRODUCTOS
 GET http://localhost:8080/api/productos
@@ -137,12 +137,12 @@ DELETE http://localhost:8080/api/productos/1
 
 ###
 
----------------------------------------
+### ---------------------------------------
 
 
----------------------------------------
+### ---------------------------------------
 
-Carritos
+### Carritos
 
 ### Configuration
 @baseUrl = http://localhost:8080/api/carritos
@@ -196,9 +196,9 @@ DELETE {{baseUrl}}/1/productos/2
 ### 7. Delete the entire cart
 DELETE {{baseUrl}}/1
 
----------------------------------------
+### ---------------------------------------
 
-Perfiles
+### Perfiles
 
 ### 1. CREATE PERFIL
 # IMPORTANTE: el usuario con ID 1 debe existir
@@ -289,5 +289,18 @@ DELETE http://localhost:8080/api/productos/1/imagenes/3
 
 ###
 ###
-
+GET http://localhost:8080/api/consulta-carrito
 ###
+@base = http://localhost:8080
+
+
+### ──────────────────────────────────────────────────────────
+### 10. PROBAR AGREGAR AL CARRITO (Con DTO)
+### ──────────────────────────────────────────────────────────
+POST {{base}}/api/carritos/1/productos
+Content-Type: application/json
+
+{
+  "idProducto": "1",
+  "cantidad": 2
+}
