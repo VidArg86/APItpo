@@ -27,11 +27,37 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 
-@ExceptionHandler(EmailAlreadyExistsException.class)
-public ResponseEntity<Object> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
+  @ExceptionHandler(EmailAlreadyExistsException.class)
+  public ResponseEntity<Object> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
     Map<String, Object> body = new HashMap<>();
     body.put("error", "Email duplicado");
     body.put("mensaje", ex.getMessage());
     return new ResponseEntity<>(body, HttpStatus.CONFLICT); // 409
-}
+  }
+
+  @ExceptionHandler(UserAlreadyExistsException.class)
+  public ResponseEntity<Object> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("error", "Usuario duplicado");
+    body.put("mensaje", ex.getMessage());
+    return new ResponseEntity<>(body, HttpStatus.CONFLICT); // 409
+  }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("error", "Petición inválida");
+    body.put("mensaje", ex.getMessage());
+    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST); // 400
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<Object> handleGlobalException(Exception ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("error", "Error interno del servidor");
+    body.put("mensaje", "Ocurrió un error inesperado. Por favor, contacte al soporte.");
+    // Opcional: imprimir el stacktrace en consola para debugging interno
+    ex.printStackTrace(); 
+    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR); // 500
+  }
 }

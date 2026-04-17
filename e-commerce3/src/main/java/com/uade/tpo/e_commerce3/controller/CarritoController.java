@@ -48,7 +48,6 @@ public class CarritoController {
       Carrito carritoActualizado = carritoService.addProductoToCarrito(carritoId, productoId, cantidad);
       return ResponseEntity.ok(carritoActualizado);
     } catch (RuntimeException e) {
-      // Si el ID del carrito o producto no existen, devolvemos el mensaje de error
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
   }
@@ -70,15 +69,9 @@ public class CarritoController {
     return ResponseEntity.ok(carritoService.removeProductoFromCarrito(carritoId, productoId));
   }
 
-  // 6. elimina el carrito completo (no solo vaciarlo)
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteCarrito(@PathVariable Long id) {
-    carritoService.delete(id);
-    return ResponseEntity.noContent().build();
+  // 6. Solo vacía el carrito, no lo borra de la BD
+  @DeleteMapping("/{id}/vaciar") 
+  public ResponseEntity<Carrito> vaciarCarrito(@PathVariable Long id) {
+      return ResponseEntity.ok(carritoService.clearCarrito(id));
   }
-
-  @DeleteMapping("/{id}/vaciar") //este solo vacia el carrito, no lo borra
-public ResponseEntity<Carrito> vaciarCarrito(@PathVariable Long id) {
-    return ResponseEntity.ok(carritoService.clearCarrito(id));
-}
 }

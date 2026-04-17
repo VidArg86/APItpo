@@ -45,13 +45,6 @@ public class PerfilController {
         perfilService.obtenerPerfilDTO(id));
   }
 
-  // DELETE PERFIL //
-  @DeleteMapping("/{id}")
-  public ResponseEntity<?> delete(@PathVariable Long id) {
-    perfilService.eliminarPerfil(id);
-    return ResponseEntity.noContent().build();
-  }
-
   // GET POR USUARIO (PRO) //
   @GetMapping("/usuario/{id}")
   public ResponseEntity<?> obtenerPerfilPorUsuario(@PathVariable Long id) {
