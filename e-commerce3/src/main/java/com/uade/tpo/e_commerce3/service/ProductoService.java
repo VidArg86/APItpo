@@ -94,8 +94,8 @@ public class ProductoService {
 
     public Optional<Producto> getProductoById(Long id) {
         return productoRepository.findById(id);
-
-        ProductoDetalleDTO obtenerInformacionParaCarrito(CarritoSolicitudDTO solicitud){
+    }
+    public ProductoDetalleDTO obtenerInformacionParaCarrito(CarritoSolicitudDTO solicitud){
             // Buscamos el producto por ID (Long)
             Producto producto = productoRepository.findById(Long.parseLong(solicitud.getIdProducto()))
                     .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + solicitud.getIdProducto()));
@@ -109,5 +109,5 @@ public class ProductoService {
                     .build();
 
         }
-    }
 }
+
