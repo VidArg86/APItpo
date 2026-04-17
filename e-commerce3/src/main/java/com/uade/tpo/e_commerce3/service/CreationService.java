@@ -54,7 +54,7 @@ public class CreationService {
         // 1. Crear usuario
         Usuario usuario = Usuario.builder()
                 .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassworld())) 
+                .password(passwordEncoder.encode(request.getPassword())) 
                 .rol(rol)
                 .build();
  
