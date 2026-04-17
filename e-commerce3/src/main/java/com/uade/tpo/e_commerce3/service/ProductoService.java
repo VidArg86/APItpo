@@ -2,9 +2,10 @@ package com.uade.tpo.e_commerce3.service;
 
 import java.util.List;
 import java.util.Optional;
+import com.uade.tpo.e_commerce3.dto.CarritoSolicitudDTO;
 
+import com.uade.tpo.e_commerce3.dto.ProductoDetalleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.uade.tpo.e_commerce3.model.Categoria;
@@ -90,7 +91,23 @@ public class ProductoService {
         return productoRepository.findAllByOrderByNombreAsc();
     }
 
+
     public Optional<Producto> getProductoById(Long id) {
         return productoRepository.findById(id);
+
+        ProductoDetalleDTO obtenerInformacionParaCarrito(CarritoSolicitudDTO solicitud){
+            // Buscamos el producto por ID (Long)
+            Producto producto = productoRepository.findById(Long.parseLong(solicitud.getIdProducto()))
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + solicitud.getIdProducto()));
+
+            // Mapeamos a DTO usando el patrón Builder
+            return ProductoDetalleDTO.builder()
+                    .id(producto.getId().toString())
+                    .nombre(producto.getNombre())
+                    .precio(producto.getPrecio())
+                    .stockActual(producto.getStock())
+                    .build();
+
+        }
     }
 }
