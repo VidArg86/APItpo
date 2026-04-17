@@ -35,6 +35,14 @@ public class ImagenController {
                 .body(imagenService.uploadImagen(file, productoId));
     }
 
+    @PostMapping("/{perfilId}/imagenes")
+    public ResponseEntity<Imagen> uploadImagenA(
+            @RequestParam("file") MultipartFile file,
+            @PathVariable Long perfilId) throws IOException {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(imagenService.uploadImagen(file, perfilId));
+    }
+
     // URL: GET http://localhost:8080/api/productos/1/imagenes/1
     @GetMapping("/{productoId}/imagenes/{id}")
     public ResponseEntity<byte[]> getImagen(
