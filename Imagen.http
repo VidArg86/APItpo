@@ -1,0 +1,99 @@
+### ============================================================
+###  TESTS DE IMÁGENES  -  APItpo E-Commerce
+### ============================================================
+
+@base = http://localhost:8080
+
+# 1. Realizar login en Test Autentication.txt
+# 2. Copiar el token y pegarlo aquí:
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9WRU5ERURPUiIsImlhdCI6MTc3NzA0ODU1NSwiZXhwIjoxNzc3MTM0OTU1fQ.OsNZbtxefk1Aog22KCkttfRurPytBFUO1nLcF4n5i_U
+
+
+# IDs de prueba (ajustar según existan en tu DB)
+@productoId = 1
+@perfilId = 1
+@imagenId = 2
+
+
+### ──────────────────────────────────────────────────────────
+### 1. SUBIR imagen a un Producto
+### ──────────────────────────────────────────────────────────
+# URL: POST http://localhost:8080/api/productos/1/imagenes 
+POST {{base}}/api/productos/{{productoId}}/imagenes
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="Bassline.png"
+Content-Type: image/png
+
+< ./e-commerce3/src/main/resources/static/Bassline.png
+--WebAppBoundary--
+
+### Respuesta esperada: 201 Created 
+
+
+### ──────────────────────────────────────────────────────────
+### 2. SUBIR imagen a un Perfil
+### ──────────────────────────────────────────────────────────
+# URL: POST http://localhost:8080/api/perfiles/1/imagenes 
+# Nota: En tu controlador el parámetro se llama productoId por error, pero es el ID del perfil 
+POST {{base}}/api/perfiles/{{perfilId}}/imagenes
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="avatar.png"
+Content-Type: image/png
+
+< ./e-commerce3/src/main/resources/static/perfil logo.png
+--WebAppBoundary--
+
+
+### ──────────────────────────────────────────────────────────
+### 3. OBTENER bytes de imagen (Producto)
+### ──────────────────────────────────────────────────────────
+# URL: GET http://localhost:8080/api/1/imagenes/1 
+GET {{base}}/api/perfiles/{{perfilId}}/imagenes/{{imagenId}}
+Authorization: Bearer {{token}}
+
+### Respuesta esperada: 200 OK y el chorro de bytes (renderiza imagen en REST Client) 
+
+
+### ──────────────────────────────────────────────────────────
+### 4. ACTUALIZAR solo el nombre de la imagen (JSON)
+### ──────────────────────────────────────────────────────────
+# URL: PUT http://localhost:8080/api/1/imagenes/1 
+PUT {{base}}/api/{{productoId}}/imagenes/{{imagenId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+"NuevoNombreDeImagen.jpg"
+
+### Nota: Tu controlador recibe un @RequestBody String 
+
+
+### ──────────────────────────────────────────────────────────
+### 5. ACTUALIZAR el archivo completo (Multipart)
+### ──────────────────────────────────────────────────────────
+# Basado en la función updateImagenFile sugerida
+PUT {{base}}/api/productos/{{productoId}}/imagenes/{{imagenId}}
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="imagen_actualizada.jpg"
+Content-Type: image/jpeg
+
+< ./nuevo_archivo.jpg
+--WebAppBoundary--
+
+
+### ──────────────────────────────────────────────────────────
+### 6. ELIMINAR imagen
+### ──────────────────────────────────────────────────────────
+# URL: DELETE http://localhost:8080/api/1/imagenes/1 
+DELETE {{base}}/api/{{productoId}}/imagenes/{{imagenId}}
+Authorization: Bearer {{token}}
+
+### Respuesta esperada: 204 No Content

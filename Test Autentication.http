@@ -29,7 +29,7 @@ Content-Type: application/json
 ### ──────────────────────────────────────────────────────────
 ### 2. REGISTRAR un segundo usuario (para probar duplicados)
 ### ──────────────────────────────────────────────────────────
-POST {{base}}/api/auth/register
+POST {{base}}/api/auth/register/vendedor
 Content-Type: application/json
 
 {
@@ -107,7 +107,7 @@ Content-Type: application/json
 ###   3. Pegalo en la línea @token de abajo (reemplazando el texto)
 ###   4. Ejecutá este request
 
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9WRU5ERURPUiIsImlhdCI6MTc3NjE0MzkxOCwiZXhwIjoxNzc2MjMwMzE4fQ.pipyOQjXxGjxJCxaPbz2Kq0NYeD9BGidcIMV607QndI
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9WRU5ERURPUiIsImlhdCI6MTc3NzA0ODU1NSwiZXhwIjoxNzc3MTM0OTU1fQ.OsNZbtxefk1Aog22KCkttfRurPytBFUO1nLcF4n5i_U
 POST {{base}}/api/productos
 Content-Type: application/json
 Authorization: Bearer {{token}}

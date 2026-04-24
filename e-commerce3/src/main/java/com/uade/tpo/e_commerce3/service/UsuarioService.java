@@ -33,4 +33,24 @@ public class UsuarioService {
     public void deleteUsuario(Long id) {
         usuarioRepository.deleteById(id);
     }
+
+    public void darDeBajaUsuario(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        
+        if (usuario.isEnabled()){
+        usuario.setDadoDeAlta(false); // Note: "dar de baja" usually means setting to false
+        usuarioRepository.save(usuario);
+        }
+    }
+
+    public void darDeAltaUsuario(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (!usuario.isEnabled()){
+        usuario.setDadoDeAlta(true); // Note: "dar de baja" usually means setting to false
+        usuarioRepository.save(usuario);
+        }
+    }
 }

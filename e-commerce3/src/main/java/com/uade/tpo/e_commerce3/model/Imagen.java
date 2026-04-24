@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 
@@ -38,4 +39,8 @@ public class Imagen {
     @JsonIgnore
     private Producto producto;
 
+    @OneToOne
+    @JoinColumn(name = "perfil_id")
+    @JsonIgnore
+    private Perfil perfil;
 }

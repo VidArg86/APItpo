@@ -30,10 +30,19 @@ public class Usuario implements UserDetails {
     // La contraseña se llama "password" para que Spring Security la encuentre automáticamente
     @Column(nullable = false)
     private String password;
- 
+
     @Enumerated(EnumType.STRING)
     private Rol rol;
- 
+    
+    @Builder.Default
+    private boolean usuarioExpirado = true;
+
+    @Builder.Default
+    private boolean cuentaBloqueada = true;
+
+    @Builder.Default
+    private boolean dadoDeAlta = true;
+
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
     private Perfil perfil;
@@ -56,14 +65,14 @@ public class Usuario implements UserDetails {
     }
  
     @Override
-    public boolean isAccountNonExpired()     { return true; }
+    public boolean isAccountNonExpired()     { return usuarioExpirado; }
  
     @Override
-    public boolean isAccountNonLocked()      { return true; }
+    public boolean isAccountNonLocked()      { return cuentaBloqueada; }
  
     @Override
     public boolean isCredentialsNonExpired() { return true; }
  
     @Override
-    public boolean isEnabled()               { return true; }
+    public boolean isEnabled()               { return dadoDeAlta; }
 }

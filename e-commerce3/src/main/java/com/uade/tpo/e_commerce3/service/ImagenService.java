@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.uade.tpo.e_commerce3.model.Imagen;
+import com.uade.tpo.e_commerce3.model.Perfil;
 import com.uade.tpo.e_commerce3.model.Producto;
 import com.uade.tpo.e_commerce3.repository.ImagenRepository;
+import com.uade.tpo.e_commerce3.repository.PerfilRepository;
 import com.uade.tpo.e_commerce3.repository.ProductoRepository;
 
 import jakarta.transaction.Transactional;
@@ -23,7 +25,10 @@ public class ImagenService {
     @Autowired
     private ProductoRepository productoRepository;
 
-    public Imagen uploadImagen(MultipartFile file, Long productoId) throws IOException {
+    @Autowired
+    private PerfilRepository perfilRepository;
+
+    public Imagen uploadImagenProducto(MultipartFile file, Long productoId) throws IOException {
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
@@ -32,6 +37,18 @@ public class ImagenService {
         imagen.setExtension(file.getContentType());
         imagen.setData(file.getBytes());
         imagen.setProducto(producto);
+
+        return imagenRepository.save(imagen);
+    }
+
+    public Imagen uploadImagenPerfil(MultipartFile file, Long perfilId) throws IOException {
+        Perfil perfil = perfilRepository.findById(perfilId)
+                .orElseThrow(() -> new RuntimeException("Perfil no encontrado"));
+        Imagen imagen = new Imagen();
+        imagen.setNombre(file.getOriginalFilename());
+        imagen.setExtension(file.getContentType());
+        imagen.setData(file.getBytes());
+        imagen.setPerfil(perfil);
 
         return imagenRepository.save(imagen);
     }
@@ -46,6 +63,16 @@ public class ImagenService {
             imagen.setNombre(nuevoNombre);
             return imagenRepository.save(imagen);
         }).orElseThrow(() -> new RuntimeException("Imagen no encontrada"));
+    }
+
+    public Imagen updateImagenFile(Long id, MultipartFile file) throws IOException {
+    Imagen imagen = getImagen(id); // Reutiliza tu método existente
+    
+    imagen.setNombre(file.getOriginalFilename());
+    imagen.setExtension(file.getContentType());
+    imagen.setData(file.getBytes());
+    
+    return imagenRepository.save(imagen);
     }
 
     public void deleteImagen(Long id) {
