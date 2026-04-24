@@ -40,7 +40,7 @@ POST http://localhost:8080/api/categorias
 Content-Type: application/json
 
 {
-    "nombre": "Hogar"
+    "nombre": "Check"
 }
 
 ###
@@ -103,7 +103,7 @@ Content-Type: application/json
 
 
 ### 4. GET PRODUCT POR ID
-GET http://localhost:8080/api/productos/1
+GET http://localhost:8080/api/productos/2
 
 ###
 ### 5. AGREGAR CATEGORIA A UN PRODUCTO EXISTENTE
@@ -207,6 +207,7 @@ Content-Type: application/json
 
 {
     "nombreCompleto": "Juan Perez",
+  "dni": "11111",
     "telefono": "11 2648-2304",
     "direccion": "Avenida Presidente Perón 1746",
     "fechaNacimiento": "04-04-2003"
@@ -264,15 +265,34 @@ POST http://localhost:8080/api/productos/1/imagenes
 Content-Type: multipart/form-data; boundary=FinalGenkidama
 
 --FinalGenkidama
-Content-Disposition: form-data; name="file"; filename="image.png"
+Content-Disposition: form-data; name="file"; filename="papyrus.png"
 Content-Type: image/png
 
-< ./src/main/resources/static/image.png
+< ./src/main/resources/static/papyrus.png
+--FinalGenkidama--
+
+
+
+###
+###
+
+POST http://localhost:8080/api/perfiles/1/imagenes
+Content-Type: multipart/form-data; boundary=FinalGenkidama
+
+--FinalGenkidama
+Content-Disposition: form-data; name="file"; filename="papyrus.png"
+Content-Type: image/png
+
+< ./src/main/resources/static/papyrus.png
 --FinalGenkidama--
 
 ###
 ### VIEW IMAGE #1 BELONGING TO PRODUCT #1
-GET http://localhost:8080/api/productos/1/imagenes/3
+GET http://localhost:8080/api/perfiles/1/imagenes/1
+
+
+###
+###
 
 
 ###

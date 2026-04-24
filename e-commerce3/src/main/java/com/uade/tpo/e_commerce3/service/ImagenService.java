@@ -32,8 +32,8 @@ public class ImagenService {
     public Imagen uploadImagen(MultipartFile file, Long productoId) throws IOException {
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        if (!file.isEmpty()) {
-            throw new NotFoundImageException("No se puede");
+        if (file.isEmpty()) {
+            throw new NotFoundImageException("El archivo no existe");
         }
         Imagen imagen = new Imagen();
         imagen.setNombre(file.getOriginalFilename());
@@ -47,8 +47,8 @@ public class ImagenService {
     public Imagen uploadImagenA(MultipartFile file, Long perfilId) throws IOException {
         Perfil perfil = perfilRepository.findById(perfilId)
                 .orElseThrow(() -> new RuntimeException("Perfil no encontrado"));
-        if (!file.isEmpty()) {
-            throw new NotFoundImageException("No se puede");
+        if (file.isEmpty()) {
+            throw new NotFoundImageException("El archivo no existe");
         }
         Imagen imagen = new Imagen();
         imagen.setNombre(file.getOriginalFilename());
