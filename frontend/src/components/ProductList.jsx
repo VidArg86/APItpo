@@ -10,10 +10,9 @@ const ProductList = () => {
       try {
         const token = localStorage.getItem('token');
         const response = await fetch('http://localhost:8080/api/productos', {
-          headers: {
-            // Enviamos el token para que tu JwtFilter de Spring Boot lo acepte
-            'Authorization': `Bearer ${token}`
-          }
+          headers: token
+            ? { 'Authorization': `Bearer ${token}` } // FIX: solo manda el header si hay token, sino manda "Bearer null"
+            : {}
         });
         
         if (response.ok) {

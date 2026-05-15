@@ -9,16 +9,15 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/auth/login', {
+      const response = await fetch('http://localhost:8080/api/auth/login', { // FIX: faltaba /api
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, "contraseña": password }) // FIX: el backend espera "contraseña"
       });
 
       if (response.ok) {
-        const data = await response.json();
-        // Guardamos el token JWT que devuelve tu backend
-        localStorage.setItem('token', data.token); 
+        const token = await response.text(); // FIX: el backend devuelve el token como String, no JSON
+        localStorage.setItem('token', token);
         navigate('/'); // Redirige al catálogo
       } else {
         alert('Credenciales incorrectas');

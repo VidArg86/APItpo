@@ -1,11 +1,14 @@
+import { useState } from 'react'; // FIX: agregar useState
 import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token'); // Verificamos si el usuario está logueado
+  // FIX: sin useState el navbar no se actualiza al hacer login/logout
+  const [token, setToken] = useState(localStorage.getItem('token'));
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    setToken(null); // FIX: actualizar estado para re-renderizar
     navigate('/login');
   };
 
