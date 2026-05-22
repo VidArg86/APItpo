@@ -1,34 +1,69 @@
-// Ruta: src/components/ProductList.jsx (Fragmento del return)
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; // 1. IMPORTANTE: Importar Link
+import { Link } from 'react-router-dom';
 
-// ... todo el resto de tu código useEffect y estados queda igual ...
+const ProductList = () => {
+  const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
-return (
-  <div>
-    <h2>Catálogo de Productos</h2>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-      {productos.length > 0 ? productos.map(prod => (
-        <div key={prod.id} style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'between' }}>
-          
-          {/* 2. Convertimos el nombre en un Link dinámico usando template literals */}
-          <Link to={`/producto/${prod.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <h3 style={{ cursor: 'pointer', transition: 'color 0.2s' }} className="product-title-link">
-              {prod.nombre}
-            </h3>
-          </Link>
+  // Se ejecuta una sola vez al cargar la pantalla
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:8080/api/productos', {
+          headers: token
+            ? { 'Authorization': `Bearer ${token}` } 
+            : {}
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setProductos(data);
+        }
+      } catch (error) {
+        console.error('Error fetching productos:', error);
+      } finally {
+        setCargando(false);
+      }
+    };
 
-          <p>{prod.descripcion}</p>
-          <p style={{ fontWeight: 'bold', marginTop: 'auto' }}>${prod.precio}</p>
-          
-          {/* Opcional: Podés meter un enlace de "Ver más" de forma explícita */}
-          <Link to={`/producto/${prod.id}`} style={{ margin: '10px 0', fontSize: '14px', color: 'var(--accent)' }}>
-            Ver detalles
-          </Link>
+    fetchProductos();
+  }, []); // Array vacío para evitar bucles infinitos
 
-          <button>Agregar al Carrito</button>
-        </div>
-      )) : <p>No hay productos disponibles.</p>}
+  if (cargando) return <h2>Cargando productos...</h2>;
+
+  return (
+    <div>
+      <h2>Catálogo de Productos</h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+        {productos.length > 0 ? (
+          productos.map(prod => (
+            <div key={prod.id} style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              
+              {/* Enlace dinámico en el título del producto */}
+              <Link to={`/producto/${prod.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <h3 style={{ cursor: 'pointer', margin: '0 0 10px 0' }}>
+                  {prod.nombre}
+                </h3>
+              </Link>
+
+              <p>{prod.descripcion}</p>
+              <p style={{ fontWeight: 'bold', marginTop: 'auto', paddingTop: '10px' }}>${prod.precio}</p>
+              
+              {/* Enlace explícito de "Ver detalles" */}
+              <Link to={`/producto/${prod.id}`} style={{ margin: '10px 0', fontSize: '14px', color: '#aa3bff', textDecoration: 'none', fontWeight: 'bold' }}>
+                Ver detalles →
+              </Link>
+
+              <button style={{ cursor: 'pointer' }}>Agregar al Carrito</button>
+            </div>
+          ))
+        ) : (
+          <p>No hay productos disponibles.</p>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
+export default ProductList;
