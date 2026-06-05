@@ -14,11 +14,10 @@ import Register from './components/Register';
 import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
- 
+import Favorites from './components/Favorites'; // <-- Importamos la nueva vista
+
 function App() {
   return (
-    // CartProvider envuelve todo para que cartItems, addToCart, etc.
-    // estén disponibles en Navbar, ProductList, Cart y Checkout.
     <CartProvider>
       <Router>
         <Navbar />
@@ -27,16 +26,15 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<ProductList />} />
             <Route path="/login" element={<Login />} />
-            {/* Ruta dinámica: el :id cambia según el producto */}
             <Route path="/producto/:id" element={<ProductDetail />} />
-            {/* Rutas nuevas del carrito */}
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/favoritos" element={<Favorites />} /> {/* <-- Nueva Ruta registrada */}
           </Routes>
         </div>
       </Router>
     </CartProvider>
   );
 }
- 
+
 export default App;

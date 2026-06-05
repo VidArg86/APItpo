@@ -8,24 +8,23 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useContext/CartContext';
+// Importamos useSelector de Redux
+import { useSelector } from 'react-redux';
  
 const Navbar = () => {
   const navigate = useNavigate();
- 
-  // Leemos el token del localStorage para saber si el usuario está logueado.
-  // Usamos useState para que el navbar se re-renderice cuando el token cambia.
   const [token, setToken] = useState(localStorage.getItem('token'));
- 
-  // Traemos los items del carrito para calcular cuántos hay
   const { cartItems } = useCart();
  
-  // Sumamos las cantidades de todos los productos del carrito
-  // Ejemplo: si hay 2 remeras y 3 pantalones, muestra 5
+  // Obtenemos la cantidad de items favoritos
+  const favoritos = useSelector((state) => state.favoritos.items);
+  const cantidadFavoritos = favoritos.length;
+
   const cantidadTotal = cartItems.reduce((acc, item) => acc + item.quantity, 0);
  
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setToken(null); // Actualizamos el estado para que el navbar se re-renderice
+    setToken(null);
     navigate('/login');
   };
  
@@ -40,10 +39,13 @@ const Navbar = () => {
     }}>
       <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Catálogo</Link>
  
-      {/* Link al carrito con el contador de items */}
+        {/* Ahora es un Link interactivo clickeable hacia la lista de favoritos */}
+      <Link to="/favoritos" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+        ❤️ Favoritos ({cantidadFavoritos})
+      </Link>
+
       <Link to="/cart" style={{ color: 'white', textDecoration: 'none' }}>
         🛒 Carrito
-        {/* El badge solo aparece si hay al menos un producto en el carrito */}
         {cantidadTotal > 0 && (
           <span style={{
             backgroundColor: '#aa3bff',
@@ -59,7 +61,6 @@ const Navbar = () => {
         )}
       </Link>
  
-      {/* Si hay token mostramos "Salir", si no mostramos "Login" y "Registro" */}
       {token ? (
         <button
           onClick={handleLogout}
