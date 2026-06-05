@@ -1,0 +1,16 @@
+:root {
+  --color-rosa: #E38989;
+  --color-blanco: #FDF7F0;
+  --color-marron: #4C2D10;
+  --color-marron-claro: rgba(76, 45, 16, 0.1);
+  --color-borde: #E5E4E7;
+  --color-verde-ok: #4CAF50;
+  --shadow-card: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+body {
+  background-color: var(--color-blanco);
+  color: var(--color-marron);
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+}
