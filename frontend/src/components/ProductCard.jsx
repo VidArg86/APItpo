@@ -1,23 +1,32 @@
 import React from 'react';
-import { useCart } from "../hooks/useContext/CartContext";
+import { Link } from 'react-router-dom';
+import { useCart } from '../hooks/useContext/CartContext';
+
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
 
   return (
     <div className="product-card">
-      {/* Si tienes imágenes reales en la BD, cambias este div por un <img> */}
-      <div className="product-img-placeholder"></div>
-      
+      <Link to={`/producto/${product.id}`} className="product-card-link">
+        {product.imagen ? (
+          <img src={product.imagen} alt={product.nombre} className="product-img" />
+        ) : (
+          <div className="product-img-placeholder" />
+        )}
+      </Link>
+
       <div className="product-info">
-        <h3>{product.nombre}</h3>
+        <Link to={`/producto/${product.id}`} className="product-card-link">
+          <h3>{product.nombre}</h3>
+        </Link>
         <span className="price">${product.precio.toLocaleString('es-AR')}</span>
-        
+
         <div className="availability">
           <span className="dot"></span> Disponible hoy
         </div>
 
-        <button 
-          className="btn-add" 
+        <button
+          className="btn-add"
           onClick={() => addToCart(product)}
           title="Agregar al carrito"
         >
