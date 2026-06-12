@@ -60,10 +60,9 @@ const ProductCard = ({ product }) => {
                     title={esFavorito ? "Quitar de favoritos" : "Agregar a favoritos"}
                 >
                 {esFavorito ? (
-                    // Problema, no carga svg de alguna forma, incluso intente con imagen tampoco
-                    <svg src={faheartn} />
+                    <img src={faheart} alt="Favorito" style={{ width: '24px', height: '24px' }} />
                 ) : (
-                    <svg src={faheart} />
+                    <img src={faheartn} alt="No favorito" style={{ width: '24px', height: '24px', fill:"pink" }} />
                 )}
                 </button >
             </div>
