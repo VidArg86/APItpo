@@ -1,14 +1,10 @@
-// Ruta: src/components/ProductDetail.jsx
-//
-// Muestra el detalle de un producto específico.
-// El :id de la URL lo leemos con useParams y lo usamos para hacer el fetch.
-// También tiene el botón de agregar al carrito con feedback visual
-// (cambia a "✓ Agregado" por 2 segundos para confirmarle al usuario).
- 
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../hooks/useContext/CartContext';
- 
+// Importaciones de Redux
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleFavorito } from '../store/favoritosSlice';
+
 const ProductDetail = () => {
   // useParams nos da el :id que está en la URL (ej: /producto/5 → id = "5")
   const { id } = useParams();
@@ -22,6 +18,11 @@ const ProductDetail = () => {
  
   // Traemos addToCart del contexto del carrito
   const { addToCart } = useCart();
+    // Configuración de Redux
+  const dispatch = useDispatch();
+    // Buscamos en el store si este producto ID ya es favorito
+  const esFavorito = useSelector((state) => state.favoritos.items.some((item) => item.id === Number(id))
+    );
  
   // Cada vez que cambia el id en la URL, volvemos a buscar el producto
   useEffect(() => {
@@ -75,6 +76,12 @@ const ProductDetail = () => {
       <Link to="/" style={{ textDecoration: 'none', color: '#aa3bff', fontWeight: 'bold' }}>
         ← Volver al catálogo
       </Link>
+        {/* Título y Botón de Favorito alineados */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
+            <h2 style={{ margin: 0 }}>{producto.nombre}</h2>
+
+        </div>
+
  
       <h2 style={{ marginTop: '20px' }}>{producto.nombre}</h2>
       <p style={{ fontSize: '18px', color: '#555', margin: '15px 0' }}>{producto.descripcion}</p>

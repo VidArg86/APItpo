@@ -1,40 +1,93 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom';
 import { useCart } from '../hooks/useContext/CartContext';
+import { toggleFavorito } from '../store/favoritosSlice';
+import { useDispatch, useSelector } from "react-redux";
+import faheart from '../assets/heart-solid-full.svg';
+import faheartn from '../assets/heart-regular-full.svg'
 
 const ProductCard = ({ product }) => {
-  const { addToCart } = useCart();
+    const { addToCart } = useCart();
+    const dispatch = useDispatch();
 
-  return (
-    <div className="product-card">
-      <Link to={`/producto/${product.id}`} className="product-card-link">
-        {product.imagen ? (
-          <img src={product.imagen} alt={product.nombre} className="product-img" />
-        ) : (
-          <div className="product-img-placeholder" />
-        )}
-      </Link>
+    // FIX 1: Use 'product.id' instead of just 'id'
+    const esFavorito = useSelector((state) =>
+        state.favoritos.items.some((item) => item.id === Number(product.id))
+    );
 
-      <div className="product-info">
-        <Link to={`/producto/${product.id}`} className="product-card-link">
-          <h3>{product.nombre}</h3>
-        </Link>
-        <span className="price">${product.precio.toLocaleString('es-AR')}</span>
+    // Helper function to handle the favorite click
+    const handleToggleFavorite = (e) => {
+        e.preventDefault(); // Prevents the Link from triggering (if it bubbles)
+        e.stopPropagation(); // Stops the click event from reaching parent elements
 
-        <div className="availability">
-          <span className="dot"></span> Disponible hoy
+        // FIX 2: Use 'product' instead of 'producto'
+        dispatch(toggleFavorito(product));
+    };
+
+    return (
+        <div className="product-card">
+
+            {/* Container added to hold both the image and the button.
+        'position: relative' allows the absolute button to map to this box.
+      */}
+            <div className="product-image-container" style={{ position: 'relative' }}>
+                <Link to={`/producto/${product.id}`} className="product-card-link">
+                    {product.imagen ? (
+                        <img src={product.imagen} alt={product.nombre} className="product-img" />
+                    ) : (
+                        <div className="product-img-placeholder" style={{ height: '200px', backgroundColor: '#f0f0f0' }}>
+                            {/* Placeholder styling fallback */}
+                        </div>
+                    )}
+                </Link>
+
+                {/* FIX 3: Extracted button outside the Link and positioned it absolutely */}
+                <button  type="reset"
+                    onClick={handleToggleFavorite}
+                    style={{
+                        position: 'absolute',
+                        top: '5px',
+                        right: '5px',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '5px',
+                        zIndex: 30,
+                        transition: 'transform 0.2s',
+                         // Helps visibility over images
+                    }}
+                    title={esFavorito ? "Quitar de favoritos" : "Agregar a favoritos"}
+                >
+                {esFavorito ? (
+                    // Problema, no carga svg de alguna forma, incluso intente con imagen tampoco
+                    <svg src={faheartn} />
+                ) : (
+                    <svg src={faheart} />
+                )}
+                </button >
+            </div>
+
+            <div className="product-info">
+                <Link to={`/producto/${product.id}`} className="product-card-link">
+                    <h3>{product.nombre}</h3>
+                </Link>
+                <span className="price">${product.precio.toLocaleString('es-AR')}</span>
+
+                <div className="availability">
+                    <span className="dot" style={{ color: 'green' }}>●</span> Disponible hoy
+                </div>
+
+                <button
+                    className="btn-add"
+                    onClick={() => addToCart(product)}
+                    title="Agregar al carrito"
+                >
+                    +
+                </button>
+            </div>
         </div>
-
-        <button
-          className="btn-add"
-          onClick={() => addToCart(product)}
-          title="Agregar al carrito"
-        >
-          +
-        </button>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ProductCard;

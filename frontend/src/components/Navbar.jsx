@@ -3,10 +3,12 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/laEsquinaLogo.png';
 import { useCart } from '../hooks/useContext/CartContext';
 import '../styles/navbar.css';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
   const { cartItems } = useCart();
   const navigate = useNavigate();
+
 
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -46,6 +48,7 @@ const Navbar = () => {
           <img src={logo} alt="La Esquina Bakery" />
         </Link>
       </div>
+
 
       <ul className="navbar-links">
         <li>
@@ -98,6 +101,9 @@ const Navbar = () => {
                 </Link>
                 <Link to="/mis-pedidos" className="dropdown-item" onClick={() => setMenuAbierto(false)}>
                   Mis pedidos
+                </Link>
+                <Link to="/favoritos" className="dropdown-item" onClick={() => setMenuAbierto(false)}>
+                    Mis favoritos
                 </Link>
                 <button className="dropdown-item dropdown-logout" onClick={handleLogout}>
                   Cerrar sesión

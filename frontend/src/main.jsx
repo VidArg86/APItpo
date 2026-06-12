@@ -1,5 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+
+
 import App from "./App.jsx";
 
 // Actualizamos las rutas para que apunten a la nueva carpeta styles/
