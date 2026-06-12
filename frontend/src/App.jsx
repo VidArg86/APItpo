@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
+import Perfil from "./pages/Perfil";
 
 // Make sure there are NO curly braces around 'store' here!
 import store from "./store/store";
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/producto/:id" element={<ProductDetail />} />
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/perfil" element={<Perfil />} />
                     </Routes>
                 </Router>
             </CartProvider>

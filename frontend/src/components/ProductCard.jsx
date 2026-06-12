@@ -62,7 +62,7 @@ const ProductCard = ({ product }) => {
                 {esFavorito ? (
                     <img src={faheart} alt="Favorito" style={{ width: '24px', height: '24px' }} />
                 ) : (
-                    <img src={faheartn} alt="No favorito" style={{ width: '24px', height: '24px', fill:"pink" }} />
+                    <img src={faheartn} alt="No favorito" style={{ width: '24px', height: '24px' }} />
                 )}
                 </button >
             </div>
@@ -74,7 +74,7 @@ const ProductCard = ({ product }) => {
                 <span className="price">${product.precio.toLocaleString('es-AR')}</span>
 
                 <div className="availability">
-                    <span className="dot" style={{ color: 'green' }}>●</span> Disponible hoy
+                    <span className="dot" style={{ color: 'green' }}></span> Disponible hoy
                 </div>
 
                 <button
