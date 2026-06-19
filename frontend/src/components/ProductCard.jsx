@@ -1,6 +1,4 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useContext/CartContext';
 import { toggleFavorito } from '../store/favoritosSlice';
 import { useDispatch, useSelector } from "react-redux";
@@ -10,16 +8,23 @@ import faheartn from '../assets/heart-regular-full.svg'
 const ProductCard = ({ product }) => {
     const { addToCart } = useCart();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const isLoggedIn = !!localStorage.getItem('token');
 
     // FIX 1: Use 'product.id' instead of just 'id'
     const esFavorito = useSelector((state) =>
-        state.favoritos.items.some((item) => item.id === Number(product.id))
+        isLoggedIn && state.favoritos.items.some((item) => item.id === Number(product.id))
     );
 
     // Helper function to handle the favorite click
     const handleToggleFavorite = (e) => {
         e.preventDefault(); // Prevents the Link from triggering (if it bubbles)
         e.stopPropagation(); // Stops the click event from reaching parent elements
+
+        if (!isLoggedIn) {
+            navigate('/login');
+            return;
+        }
 
         // FIX 2: Use 'product' instead of 'producto'
         dispatch(toggleFavorito(product));
