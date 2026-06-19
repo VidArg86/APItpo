@@ -1,125 +1,48 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
-import logo from '../assets/laEsquinaLogo.png';
-import { useCart } from '../hooks/useContext/CartContext';
-import '../styles/navbar.css';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCurrentUser, logOut } from '../features/auth/authSlice';
+import { useLogoutServerMutation } from '../features/auth/authApi';
+import { apiSlice } from '../app/apiSlice';
 
-const Navbar = () => {
-  const { cartItems } = useCart();
-  const navigate = useNavigate();
+export const Navbar = ({ setCurrentView }) => {
+  const usuario = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+  const [logoutServer] = useLogoutServerMutation();
 
-
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
-  const [menuAbierto, setMenuAbierto] = useState(false);
-  const menuRef = useRef(null);
-
-  // Sincroniza el estado si el token cambia en otra pestaña
-  useEffect(() => {
-    const checkAuth = () => setIsLoggedIn(!!localStorage.getItem('token'));
-    window.addEventListener('storage', checkAuth);
-    return () => window.removeEventListener('storage', checkAuth);
-  }, []);
-
-  // Cierra el dropdown si se hace click afuera
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenuAbierto(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    setMenuAbierto(false);
-    navigate('/');
-  };
-
-  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const handleLogOut = async () => {
+  try {
+    await logoutServer().unwrap(); 
+  } catch (err) {
+    console.error("Error al cerrar sesión:", err);
+  } finally {
+    dispatch(logOut());
+    
+    // ── CRUCIAL: Limpia la caché al salir para remover permisos del usuario anterior
+    dispatch(apiSlice.util.resetApiState()); 
+    
+    setCurrentView('catalogo');
+  }
+};
 
   return (
-    <nav className="navbar">
-      <div className="navbar-logo">
-        <Link to="/">
-          <img src={logo} alt="La Esquina Bakery" />
-        </Link>
+    <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px', backgroundColor: '#222', color: 'white', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '15px' }}>
+        <button onClick={() => setCurrentView('catalogo')} style={{ background: 'none', color: 'white', border: 'none', cursor: 'pointer' }}>Catálogo</button>
+        {usuario?.rol === 'ROLE_CONSUMIDOR' || usuario?.rol === 'CONSUMIDOR' ? (
+          <button onClick={() => setCurrentView('carrito')} style={{ background: 'none', color: 'white', border: 'none', cursor: 'pointer' }}>Mi Carrito</button>
+        ) : null}
       </div>
 
-
-      <ul className="navbar-links">
-        <li>
-          <NavLink to="/" end className={({ isActive }) => isActive ? 'active-link' : ''}>
-            Inicio
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/productos" className={({ isActive }) => isActive ? 'active-link' : ''}>
-            Productos
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/nosotros" className={({ isActive }) => isActive ? 'active-link' : ''}>
-            Nosotros
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/contacto" className={({ isActive }) => isActive ? 'active-link' : ''}>
-            Contacto
-          </NavLink>
-        </li>
-      </ul>
-
-      <div className="navbar-actions">
-
-        {/* Carrito con badge de cantidad */}
-        <Link to="/cart" className="nav-icon nav-cart" title="Carrito">
-          🛒
-          {totalItems > 0 && (
-            <span className="cart-badge">{totalItems}</span>
-          )}
-        </Link>
-
-        {/* Cuenta: dropdown si está logueado, link a login si no */}
-        {isLoggedIn ? (
-          <div className="nav-user-menu" ref={menuRef}>
-            <button
-              className="nav-icon nav-user-btn"
-              onClick={() => setMenuAbierto(!menuAbierto)}
-              title="Mi Cuenta"
-            >
-              👤
-              <span className="user-dot" />
-            </button>
-            {menuAbierto && (
-              <div className="user-dropdown">
-                <Link to="/perfil" className="dropdown-item" onClick={() => setMenuAbierto(false)}>
-                  Mi perfil
-                </Link>
-                <Link to="/mis-pedidos" className="dropdown-item" onClick={() => setMenuAbierto(false)}>
-                  Mis pedidos
-                </Link>
-                <Link to="/favoritos" className="dropdown-item" onClick={() => setMenuAbierto(false)}>
-                    Mis favoritos
-                </Link>
-                <button className="dropdown-item dropdown-logout" onClick={handleLogout}>
-                  Cerrar sesión
-                </button>
-              </div>
-            )}
+      <div>
+        {usuario ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span>Hola, <strong>{usuario.email}</strong> ({usuario.rol})</span>
+            <button onClick={handleLogOut} style={{ backgroundColor: '#d9534f', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Salir</button>
           </div>
         ) : (
-          <Link to="/login" className="nav-icon" title="Iniciar sesión">
-            👤
-          </Link>
+          <button onClick={() => setCurrentView('login')} style={{ backgroundColor: '#0275d8', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>Iniciar Sesión</button>
         )}
-
       </div>
     </nav>
   );
 };
-
-export default Navbar;

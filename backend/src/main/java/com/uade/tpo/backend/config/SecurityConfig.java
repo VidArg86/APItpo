@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy; // <-- AGREGAR IMPORT
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,14 +34,12 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
     private final UsuarioRepository usuarioRepository;
  
-    // Le dice a Spring Security cómo cargar un usuario desde la BD usando el email
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> usuarioRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
     }
  
-    // Expone el AuthenticationManager para que AuthenticationService lo pueda usar
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -54,14 +53,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // <-- ¡AGREGAR ESTA LÍNEA!
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
+            // Aseguramos que Spring no intente crear sesiones HTTP en el servidor
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+ 
+                // ── CRUCIAL: Permitir la ruta de errores para evitar que las excepciones se enmascaren en un 403 ──
+                .requestMatchers("/error").permitAll()
+                
+                // Permitir solicitudes de preflight CORS (OPTIONS) de manera explícita
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
  
                 // ── Rutas públicas (sin token) ──────────────────────────────
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/productos/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/productos", "/api/productos/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/categorias/**").permitAll()
+                
                 // ── Rutas de carrito: solo usuarios autenticados ────────────
                 .requestMatchers("/api/carritos/**").hasAnyRole(Rol.CONSUMIDOR.name(), Rol.ADMIN.name())
  
@@ -76,7 +84,6 @@ public class SecurityConfig {
                 // ── Cualquier otra ruta requiere autenticación ───────────────
                 .anyRequest().authenticated()
             )
-            // Agrega el filtro JWT antes del filtro estándar de usuario/contraseña
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
  
         return http.build();
