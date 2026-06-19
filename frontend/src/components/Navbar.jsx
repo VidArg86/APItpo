@@ -1,40 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import logo from '../assets/laEsquinaLogo.png';
 import { useCart } from '../hooks/useContext/CartContext';
+import { logout } from '../store/authSlice';
 import '../styles/navbar.css';
-import { useSelector } from 'react-redux';
 
 const Navbar = () => {
   const { cartItems } = useCart();
   const navigate = useNavigate();
-
-
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const menuRef = useRef(null);
 
-  // Sincroniza el estado si el token cambia en otra pestaña
-  useEffect(() => {
-    const checkAuth = () => setIsLoggedIn(!!localStorage.getItem('token'));
-    window.addEventListener('storage', checkAuth);
-    return () => window.removeEventListener('storage', checkAuth);
-  }, []);
-
-  // Cierra el dropdown si se hace click afuera
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setMenuAbierto(false);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
+    dispatch(logout());
     setMenuAbierto(false);
     navigate('/');
   };
@@ -48,7 +40,6 @@ const Navbar = () => {
           <img src={logo} alt="La Esquina Bakery" />
         </Link>
       </div>
-
 
       <ul className="navbar-links">
         <li>
@@ -74,16 +65,13 @@ const Navbar = () => {
       </ul>
 
       <div className="navbar-actions">
-
-        {/* Carrito con badge de cantidad */}
         <Link to="/cart" className="nav-icon nav-cart" title="Carrito">
-          🛒
+          <span aria-hidden="true">🛒</span>
           {totalItems > 0 && (
             <span className="cart-badge">{totalItems}</span>
           )}
         </Link>
 
-        {/* Cuenta: dropdown si está logueado, link a login si no */}
         {isLoggedIn ? (
           <div className="nav-user-menu" ref={menuRef}>
             <button
@@ -91,7 +79,7 @@ const Navbar = () => {
               onClick={() => setMenuAbierto(!menuAbierto)}
               title="Mi Cuenta"
             >
-              👤
+              <span aria-hidden="true">👤</span>
               <span className="user-dot" />
             </button>
             {menuAbierto && (
@@ -103,20 +91,19 @@ const Navbar = () => {
                   Mis pedidos
                 </Link>
                 <Link to="/favoritos" className="dropdown-item" onClick={() => setMenuAbierto(false)}>
-                    Mis favoritos
+                  Mis favoritos
                 </Link>
                 <button className="dropdown-item dropdown-logout" onClick={handleLogout}>
-                  Cerrar sesión
+                  Cerrar sesion
                 </button>
               </div>
             )}
           </div>
         ) : (
-          <Link to="/login" className="nav-icon" title="Iniciar sesión">
-            👤
+          <Link to="/login" className="nav-icon" title="Iniciar sesion">
+            <span aria-hidden="true">👤</span>
           </Link>
         )}
-
       </div>
     </nav>
   );

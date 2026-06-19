@@ -22,7 +22,10 @@ export async function apiFetch(path, options = {}) {
   }
 
   const text = await res.text();
-  return text ? JSON.parse(text) : null;
+  if (!text) return null;
+
+  const contentType = res.headers.get('content-type') || '';
+  return contentType.includes('application/json') ? JSON.parse(text) : text;
 }
 
 export default BASE_URL;

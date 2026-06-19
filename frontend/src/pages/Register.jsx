@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../store/authSlice';
 
 import trigoLogo from '../assets/trigoLogo.png';
 import registerBanner from '../assets/registerBanner.png';
@@ -14,6 +16,7 @@ import '../styles/register.css';
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -60,13 +63,13 @@ const Register = () => {
 
       if (response.ok) {
         const token = await response.text();
-        localStorage.setItem('token', token);
+        dispatch(setCredentials(token));
         navigate('/');
       } else {
         const msg = await response.text();
         setError(msg || 'Error al registrarse');
       }
-    } catch (err) {
+    } catch {
       setError('No se pudo conectar con el servidor');
     }
   };

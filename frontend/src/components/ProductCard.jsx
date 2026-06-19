@@ -9,7 +9,7 @@ const ProductCard = ({ product }) => {
     const { addToCart } = useCart();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isLoggedIn = !!localStorage.getItem('token');
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
     // FIX 1: Use 'product.id' instead of just 'id'
     const esFavorito = useSelector((state) =>

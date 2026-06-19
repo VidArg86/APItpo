@@ -1,18 +1,14 @@
-// src/store/authSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiFetch } from '../services/api';
 
-// POST /api/auth/login
 export const loginUser = createAsyncThunk(
   'auth/login',
-  async ({ email, contraseña }, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
-      const token = await apiFetch('/auth/login', {
+      return await apiFetch('/auth/login', {
         method: 'POST',
-        body: JSON.stringify({ email, contraseña }),
+        body: JSON.stringify({ email, ['contrase\u00f1a']: password }),
       });
-      localStorage.setItem('token', token);
-      return token;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -31,9 +27,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem('token');
       state.token = null;
       state.isLoggedIn = false;
+    },
+    setCredentials: (state, action) => {
+      state.token = action.payload;
+      state.isLoggedIn = true;
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -54,5 +54,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setCredentials } = authSlice.actions;
 export default authSlice.reducer;

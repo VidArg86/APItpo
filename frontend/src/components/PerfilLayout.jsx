@@ -1,16 +1,18 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import PerfilSidebar from './PerfilSidebar';
 import '../styles/perfil.css';
 
 const PerfilLayout = ({ children }) => {
     const navigate = useNavigate();
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
     useEffect(() => {
-        if (!localStorage.getItem('token')) {
+        if (!isLoggedIn) {
             navigate('/login');
         }
-    }, [navigate]);
+    }, [isLoggedIn, navigate]);
 
     return (
         <div className="perfil-container">

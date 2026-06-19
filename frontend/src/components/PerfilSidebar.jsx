@@ -1,4 +1,6 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../store/authSlice';
 import heartIcon from '../assets/heart-regular-black.svg';
 import gearIcon from '../assets/gear.svg';
 
@@ -6,10 +8,12 @@ const navLinkClass = ({ isActive }) =>
     `perfil-nav-link${isActive ? ' active' : ''}`;
 
 const PerfilSidebar = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        // Forzamos recarga para que el Navbar (y el resto de la app) sincronicen el estado de sesión
-        window.location.href = '/';
+        dispatch(logout());
+        navigate('/');
     };
 
     return (
@@ -27,13 +31,13 @@ const PerfilSidebar = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <span className="perfil-nav-link perfil-nav-disabled" title="Próximamente">
+                        <span className="perfil-nav-link perfil-nav-disabled" title="Proximamente">
                             Direcciones
                         </span>
                     </li>
                     <li>
-                        <span className="perfil-nav-link perfil-nav-disabled" title="Próximamente">
-                            Métodos de pago
+                        <span className="perfil-nav-link perfil-nav-disabled" title="Proximamente">
+                            Metodos de pago
                         </span>
                     </li>
                     <li>
@@ -43,14 +47,14 @@ const PerfilSidebar = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <span className="perfil-nav-link perfil-nav-disabled" title="Próximamente">
+                        <span className="perfil-nav-link perfil-nav-disabled" title="Proximamente">
                             <img src={gearIcon} alt="" className="perfil-nav-icon" />
-                            Configuración
+                            Configuracion
                         </span>
                     </li>
                     <li>
                         <button className="perfil-nav-link perfil-nav-logout" onClick={handleLogout}>
-                            Cerrar Sesión
+                            Cerrar Sesion
                         </button>
                     </li>
                 </ul>
