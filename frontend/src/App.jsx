@@ -17,6 +17,9 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./components/Cart";
 import Checkout from "./pages/Checkout";
 import CartRedux from "./components/CartRedux";
+import Perfil from "./pages/Perfil";
+import MisPedidos from "./pages/MisPedidos";
+import Favoritos from "./pages/Favoritos";
 
 function App() {
     return (
@@ -34,6 +37,9 @@ function App() {
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/cart-redux" element={<CartRedux />} />
+                        <Route path="/perfil" element={<Perfil />} />
+                        <Route path="/mis-pedidos" element={<MisPedidos />} />
+                        <Route path="/favoritos" element={<Favoritos />} />
                     </Routes>
                 </Router>
             </CartProvider>
