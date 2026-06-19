@@ -16,6 +16,7 @@ import Register from "./pages/Register";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./components/Cart";
 import Checkout from "./pages/Checkout";
+import CartRedux from "./components/CartRedux";
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/producto/:id" element={<ProductDetail />} />
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/cart-redux" element={<CartRedux />} />
                     </Routes>
                 </Router>
             </CartProvider>
