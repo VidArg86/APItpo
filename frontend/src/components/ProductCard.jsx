@@ -79,7 +79,7 @@ const ProductCard = ({ product }) => {
                 <span className="price">${product.precio.toLocaleString('es-AR')}</span>
 
                 <div className="availability">
-                    <span className="dot" style={{ color: 'green' }}>●</span> Disponible hoy
+                    <span className="dot" style={{ color: 'green' }}></span> Disponible hoy
                 </div>
 
                 <button
