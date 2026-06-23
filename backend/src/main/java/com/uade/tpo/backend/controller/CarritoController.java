@@ -2,16 +2,14 @@ package com.uade.tpo.backend.controller;
 
 import java.util.List;
 
+import com.uade.tpo.backend.dto.RegistrationRequestDTO;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.uade.tpo.backend.model.Carrito;
 import com.uade.tpo.backend.service.CarritoService;
@@ -43,9 +41,13 @@ public class CarritoController {
   public ResponseEntity<?> addProducto(
       @PathVariable Long carritoId,
       @PathVariable Long productoId,
-      @RequestParam(defaultValue = "1") int cantidad) {
+      @RequestParam(defaultValue = "1") int cantidad,
+      HttpServletResponse response
+      ) {
     try {
       Carrito carritoActualizado = carritoService.addProductoToCarrito(carritoId, productoId, cantidad);
+      Cookie browserSessionCookie = new Cookie("productoId", productoId.toString());
+      response.addCookie(browserSessionCookie);
       return ResponseEntity.ok(carritoActualizado);
     } catch (RuntimeException e) {
       // Si el ID del carrito o producto no existen, devolvemos el mensaje de error
@@ -81,4 +83,6 @@ public class CarritoController {
 public ResponseEntity<Carrito> vaciarCarrito(@PathVariable Long id) {
     return ResponseEntity.ok(carritoService.clearCarrito(id));
 }
+
+
 }

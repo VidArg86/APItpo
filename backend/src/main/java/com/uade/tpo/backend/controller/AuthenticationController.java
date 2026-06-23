@@ -1,12 +1,14 @@
 package com.uade.tpo.backend.controller;
  
+import com.uade.tpo.backend.dto.LoginRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
- 
-import com.uade.tpo.backend.dto.LoginRequest;
+
 import com.uade.tpo.backend.dto.RegistrationRequestDTO;
 import com.uade.tpo.backend.service.CreationService;
  
@@ -21,9 +23,19 @@ public class AuthenticationController {
  
     // POST /api/auth/register  →  registra usuario CONSUMIDOR y devuelve JWT
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegistrationRequestDTO request) {
+    public ResponseEntity<String> register(@RequestBody LoginRequest request, HttpServletResponse response) {
+        String jwtToken = authenticationService.authenticate(request);
+        Cookie cookie = new Cookie("access_token", jwtToken);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+
+        cookie.setPath("/");
+        cookie.setMaxAge(60*15);
+        response.addCookie(cookie);
+
         return ResponseEntity.ok(authenticationService.register(request));
     }
+
 
     // POST /api/auth/register/vendedor  →  registra VENDEDOR y devuelve JWT
     @PostMapping("/register/vendedor")
@@ -39,7 +51,12 @@ public class AuthenticationController {
  
     // POST /api/auth/login  →  valida credenciales y devuelve JWT
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest request, HttpServletResponse response) {
+        Cookie cookie = new Cookie("username",  request.getEmail());
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 }
