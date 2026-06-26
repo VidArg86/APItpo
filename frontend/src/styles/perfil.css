@@ -1,0 +1,197 @@
+.perfil-container {
+  display: flex;
+  gap: 2.5rem;
+  padding: 2rem;
+  max-width: 1800px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+/* ---------- Sidebar ---------- */
+.perfil-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--color-borde);
+  padding-right: 1.5rem;
+}
+
+.perfil-nav-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.perfil-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  color: var(--color-marron);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.perfil-nav-link:hover {
+  background-color: var(--color-marron-claro);
+}
+
+.perfil-nav-link.active {
+  background-color: var(--color-marron-claro);
+  color: var(--color-rosa);
+  font-weight: 700;
+}
+
+.perfil-nav-disabled {
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.perfil-nav-disabled:hover {
+  background-color: transparent;
+}
+
+.perfil-nav-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.85;
+}
+
+.perfil-nav-logout {
+  margin-top: 0.5rem;
+  color: var(--color-rosa);
+  border-top: 1px solid var(--color-borde);
+  padding-top: 0.75rem;
+}
+
+/* ---------- Content area ---------- */
+.perfil-content {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.perfil-title {
+  margin-bottom: 0.5rem;
+  color: #222;
+  text-align: left;
+}
+
+.perfil-subtitle {
+  color: #666;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+/* ---------- Empty state (favoritos / pedidos) ---------- */
+.perfil-empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  border: 2px dashed var(--color-borde);
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.perfil-empty-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.perfil-empty-text {
+  color: #888;
+  font-size: 16px;
+  margin: 0;
+}
+
+.perfil-empty-cta {
+  display: inline-block;
+  background-color: var(--color-rosa);
+  color: var(--color-blanco);
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-top: 1.5rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-card);
+}
+
+/* ---------- Favoritos grid ---------- */
+.perfil-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ---------- Mi perfil cards ---------- */
+.perfil-card {
+  background-color: #fff;
+  border: 1px solid var(--color-borde);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-card);
+}
+
+.perfil-card h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--color-marron);
+}
+
+.perfil-data-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-borde);
+  font-size: 0.95rem;
+}
+
+.perfil-data-row:last-child {
+  border-bottom: none;
+}
+
+.perfil-data-label {
+  color: #888;
+}
+
+.perfil-data-value {
+  color: var(--color-marron);
+  font-weight: 500;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .perfil-container {
+    flex-direction: column;
+    padding: 1.25rem;
+    gap: 1.5rem;
+  }
+
+  .perfil-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--color-borde);
+    padding-right: 0;
+    padding-bottom: 1rem;
+  }
+
+  .perfil-nav-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .perfil-nav-logout {
+    border-top: none;
+    margin-top: 0;
+  }
+}

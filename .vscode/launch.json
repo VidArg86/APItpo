@@ -2,11 +2,31 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Spring Boot-ECommerce3Application<e-commerce3>",
+            "name": "Spring Boot-backendApplication<e-commerce3>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "mainClass": "com.uade.tpo.e_commerce3.ECommerce3Application",
+            "mainClass": "com.uade.tpo.backend.backendApplication",
             "projectName": "e-commerce3",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-backendApplication<backend>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.uade.tpo.backend.backendApplication",
+            "projectName": "backend",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-BackendApplication<backend>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.uade.tpo.backend.BackendApplication",
+            "projectName": "backend",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }

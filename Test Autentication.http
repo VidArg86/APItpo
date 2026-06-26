@@ -107,8 +107,8 @@ Content-Type: application/json
 ###   3. Pegalo en la línea @token de abajo (reemplazando el texto)
 ###   4. Ejecutá este request
 
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9WRU5ERURPUiIsImlhdCI6MTc3NzA0ODU1NSwiZXhwIjoxNzc3MTM0OTU1fQ.OsNZbtxefk1Aog22KCkttfRurPytBFUO1nLcF4n5i_U
-POST {{base}}/api/productos
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9WRU5ERURPUiIsImlhdCI6MTc4MTIxOTcwNCwiZXhwIjoxNzgxMzA2MTA0fQ.GMZ0jCXlic26PjxQBxDpddq6ZsBA4mU44WkDLSe21Bg
+POST http://localhost:8080/api/productos
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
