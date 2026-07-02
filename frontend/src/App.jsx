@@ -6,6 +6,7 @@ import store, { persistor } from "./store/store";
 import Navbar from "./components/Navbar";
 import { CartProvider } from "./hooks/useContext/CartContext";
 
+import Home from "./pages/Home";
 import Catalog from "./pages/Catalog";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -27,7 +28,7 @@ const AppLayout = () => {
         <>
             {!isAdmin && <Navbar />}
             <Routes>
-                <Route path="/" element={<div style={{ padding: '4rem', textAlign: 'center' }}><h2>Vista Inicio (En construccion)</h2></div>} />
+                <Route path="/" element={<Home />} />
                 <Route path="/productos" element={<Catalog />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
