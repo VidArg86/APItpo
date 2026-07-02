@@ -1,7 +1,9 @@
 .home-page-container {
+  width: 100%;
   padding: 2rem 1.5rem 3rem;
   max-width: 1400px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .home-hero-banner,
@@ -191,7 +193,7 @@
 
 .home-product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.5rem;
 }
 

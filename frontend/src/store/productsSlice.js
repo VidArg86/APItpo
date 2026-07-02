@@ -24,6 +24,22 @@ export const fetchCategorias = createAsyncThunk(
   }
 );
 
+// Sube cada imagen de forma independiente: si una falla, no interrumpe al resto.
+// Devuelve los mensajes de las que fallaron para poder avisarle al usuario.
+async function subirImagenes(productoId, imagenes) {
+  const errores = [];
+  for (const file of imagenes) {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      await apiUpload(`/productos/${productoId}/imagenes`, formData);
+    } catch (err) {
+      errores.push(`${file.name}: ${err.message}`);
+    }
+  }
+  return errores;
+}
+
 // Crea el producto, le asocia categorias y sube las imagenes seleccionadas
 export const createProducto = createAsyncThunk(
   'productos/create',
@@ -38,13 +54,10 @@ export const createProducto = createAsyncThunk(
         producto = await apiFetch(`/productos/${producto.id}/categorias/${categoriaId}`, { method: 'POST' });
       }
 
-      for (const file of imagenes) {
-        const formData = new FormData();
-        formData.append('file', file);
-        await apiUpload(`/productos/${producto.id}/imagenes`, formData);
-      }
+      const erroresImagenes = await subirImagenes(producto.id, imagenes);
+      producto = await apiFetch(`/productos/${producto.id}`);
 
-      return await apiFetch(`/productos/${producto.id}`);
+      return { producto, erroresImagenes };
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -70,13 +83,10 @@ export const updateProducto = createAsyncThunk(
         await apiFetch(`/productos/${id}/categorias/${categoriaId}`, { method: 'DELETE' });
       }
 
-      for (const file of imagenes) {
-        const formData = new FormData();
-        formData.append('file', file);
-        await apiUpload(`/productos/${id}/imagenes`, formData);
-      }
+      const erroresImagenes = await subirImagenes(id, imagenes);
+      const producto = await apiFetch(`/productos/${id}`);
 
-      return await apiFetch(`/productos/${id}`);
+      return { producto, erroresImagenes };
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -148,7 +158,7 @@ const productsSlice = createSlice({
       })
       .addCase(createProducto.fulfilled, (state, action) => {
         state.saving = false;
-        upsertProducto(state, action.payload);
+        upsertProducto(state, action.payload.producto);
       })
       .addCase(createProducto.rejected, (state, action) => {
         state.saving = false;
@@ -160,7 +170,7 @@ const productsSlice = createSlice({
       })
       .addCase(updateProducto.fulfilled, (state, action) => {
         state.saving = false;
-        upsertProducto(state, action.payload);
+        upsertProducto(state, action.payload.producto);
       })
       .addCase(updateProducto.rejected, (state, action) => {
         state.saving = false;

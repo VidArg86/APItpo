@@ -94,7 +94,7 @@ const Catalog = () => {
   };
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
+    <div className="page-container">
 
       <div className="catalog-banner">
         <img src={bannerImage} alt="Banner Catálogo" />

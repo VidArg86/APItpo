@@ -4,6 +4,7 @@ import ProductImage from './ProductImage';
 import { deleteImagenProducto } from '../../store/productsSlice';
 
 const emptyForm = { nombre: '', descripcion: '', precio: '', stock: '', categoriaId: '' };
+const MAX_IMAGENES = 5;
 
 const ProductFormModal = ({ producto, categorias, saving, onClose, onSubmit }) => {
   const dispatch = useDispatch();
@@ -33,10 +34,24 @@ const ProductFormModal = ({ producto, categorias, saving, onClose, onSubmit }) =
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
+  const imagenesExistentes = producto?.imagenes?.length || 0;
+
   const handleFiles = (files) => {
     const list = Array.from(files);
-    setNuevasImagenes((prev) => [...prev, ...list]);
-    setPreviews((prev) => [...prev, ...list.map((f) => URL.createObjectURL(f))]);
+    const espacioDisponible = MAX_IMAGENES - imagenesExistentes - nuevasImagenes.length;
+
+    if (espacioDisponible <= 0) {
+      window.alert(`Ya alcanzaste el máximo de ${MAX_IMAGENES} fotos por producto.`);
+      return;
+    }
+
+    const aAgregar = list.slice(0, espacioDisponible);
+    if (list.length > aAgregar.length) {
+      window.alert(`Solo se agregaron ${aAgregar.length} foto(s): el máximo es ${MAX_IMAGENES} por producto.`);
+    }
+
+    setNuevasImagenes((prev) => [...prev, ...aAgregar]);
+    setPreviews((prev) => [...prev, ...aAgregar.map((f) => URL.createObjectURL(f))]);
   };
 
   const removeNuevaImagen = (index) => {
@@ -101,17 +116,21 @@ const ProductFormModal = ({ producto, categorias, saving, onClose, onSubmit }) =
           </label>
 
           <div>
-            <p className="admin-form-label">Fotos del producto</p>
-            <label className="admin-dropzone">
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                hidden
-                onChange={(e) => handleFiles(e.target.files)}
-              />
-              <span>📷 Hacé clic para subir fotos</span>
-            </label>
+            <p className="admin-form-label">
+              Fotos del producto ({imagenesExistentes + nuevasImagenes.length}/{MAX_IMAGENES})
+            </p>
+            {imagenesExistentes + nuevasImagenes.length < MAX_IMAGENES && (
+              <label className="admin-dropzone">
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  hidden
+                  onChange={(e) => handleFiles(e.target.files)}
+                />
+                <span>📷 Hacé clic para subir fotos</span>
+              </label>
+            )}
 
             <div className="admin-image-preview-grid">
               {isEdit && (producto.imagenes || []).map((img) => (

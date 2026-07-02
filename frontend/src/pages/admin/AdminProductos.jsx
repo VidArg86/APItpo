@@ -43,12 +43,20 @@ const AdminProductos = () => {
   };
 
   const handleSubmit = async (data) => {
-    if (productoEditando) {
-      await dispatch(updateProducto({ id: productoEditando.id, ...data }));
-    } else {
-      await dispatch(createProducto(data));
+    try {
+      const accion = productoEditando
+        ? updateProducto({ id: productoEditando.id, ...data })
+        : createProducto(data);
+      const { erroresImagenes } = await dispatch(accion).unwrap();
+
+      setModalOpen(false);
+
+      if (erroresImagenes.length > 0) {
+        window.alert(`El producto se guardó, pero algunas imágenes no se pudieron subir:\n${erroresImagenes.join('\n')}`);
+      }
+    } catch (error) {
+      window.alert(`No se pudo guardar el producto: ${error}`);
     }
-    setModalOpen(false);
   };
 
   const handleDelete = (producto) => {

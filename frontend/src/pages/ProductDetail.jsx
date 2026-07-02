@@ -6,6 +6,11 @@ import { toggleFavorito } from '../store/favoritosSlice';
 import { apiFetch, getImagenUrl } from '../services/api';
 import faheart from '../assets/heart-solid-full.svg';
 import faheartn from '../assets/heart-regular-full.svg';
+import enviosIcon from '../assets/envios.png';
+import productosIcon from '../assets/productoss.png';
+import pedidosIcon from '../assets/pedidoss.png';
+import retiroIcon from '../assets/retiro.png';
+import '../styles/catalog.css';
 import '../styles/productDetail.css';
 
 const ProductDetail = () => {
@@ -171,6 +176,43 @@ const ProductDetail = () => {
           >
             📦 Comprar ahora
           </button>
+        </div>
+      </div>
+
+      <div className="features-section">
+        <div className="feature-item">
+          <img src={enviosIcon} alt="Envíos en el día" className="feature-icon" />
+          <div className="feature-text">
+            <h4>Envíos en el día</h4>
+            <p>Recibí tu pedido rápido y fresco.</p>
+          </div>
+        </div>
+        <div className="feature-divider"></div>
+
+        <div className="feature-item">
+          <img src={productosIcon} alt="Productos frescos" className="feature-icon" />
+          <div className="feature-text">
+            <h4>Productos frescos</h4>
+            <p>Elaboramos todos los días.</p>
+          </div>
+        </div>
+        <div className="feature-divider"></div>
+
+        <div className="feature-item">
+          <img src={pedidosIcon} alt="Pedidos personalizados" className="feature-icon" />
+          <div className="feature-text">
+            <h4>Pedidos personalizados</h4>
+            <p>Tortas y box a tu medida.</p>
+          </div>
+        </div>
+        <div className="feature-divider"></div>
+
+        <div className="feature-item">
+          <img src={retiroIcon} alt="Retiro en tienda" className="feature-icon" />
+          <div className="feature-text">
+            <h4>Retiro en tienda</h4>
+            <p>Pasá a buscar tu pedido.</p>
+          </div>
         </div>
       </div>
     </div>

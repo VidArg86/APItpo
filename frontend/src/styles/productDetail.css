@@ -1,7 +1,9 @@
 .pd-page {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 2rem 3rem;
+  box-sizing: border-box;
 }
 
 .pd-breadcrumb {
@@ -98,6 +100,7 @@
 .pd-info {
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .pd-hecho-con-amor {
