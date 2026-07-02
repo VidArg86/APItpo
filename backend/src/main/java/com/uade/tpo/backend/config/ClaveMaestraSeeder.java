@@ -13,17 +13,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClaveMaestraSeeder implements CommandLineRunner {
 
-    private static final String CLAVE_MAESTRA_DEFAULT = "AniTomiVaniJuanUADE2026.admin";
+    private static final String CLAVE_MAESTRA_DEFAULT = "AniTomiVaniDeniJuanUADE2026.admin";
 
     private final ClaveMaestraRepository claveMaestraRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
-        if (claveMaestraRepository.count() == 0) {
-            ClaveMaestra clave = new ClaveMaestra();
-            clave.setValorHash(passwordEncoder.encode(CLAVE_MAESTRA_DEFAULT));
-            claveMaestraRepository.save(clave);
-        }
+        ClaveMaestra clave = claveMaestraRepository.findAll().stream().findFirst().orElseGet(ClaveMaestra::new);
+        clave.setValorHash(passwordEncoder.encode(CLAVE_MAESTRA_DEFAULT));
+        claveMaestraRepository.save(clave);
     }
 }
