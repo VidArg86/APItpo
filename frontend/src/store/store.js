@@ -13,6 +13,7 @@ import webStorage from 'redux-persist/lib/storage';
 import favoritosReducer from './favoritosSlice';
 import cartReducer from './cartSlice';
 import authReducer from './authSlice';
+import productosReducer from './productsSlice';
 
 const authPersistConfig = {
     key: 'auth',
@@ -38,6 +39,7 @@ const store = configureStore({
         favoritos: favoritosReducer,
         cart: cartReducer,
         auth: persistReducer(authPersistConfig, authReducer),
+        productos: productosReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

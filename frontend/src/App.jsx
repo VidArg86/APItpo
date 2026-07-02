@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./store/store";
@@ -16,6 +16,43 @@ import CartRedux from "./components/CartRedux";
 import Perfil from "./pages/Perfil";
 import MisPedidos from "./pages/MisPedidos";
 import Favoritos from "./pages/Favoritos";
+import AdminProductos from "./pages/admin/AdminProductos";
+import AdminPlaceholder from "./pages/admin/AdminPlaceholder";
+
+const AppLayout = () => {
+    const location = useLocation();
+    const isAdmin = location.pathname.startsWith('/admin');
+
+    return (
+        <>
+            {!isAdmin && <Navbar />}
+            <Routes>
+                <Route path="/" element={<div style={{ padding: '4rem', textAlign: 'center' }}><h2>Vista Inicio (En construccion)</h2></div>} />
+                <Route path="/productos" element={<Catalog />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/producto/:id" element={<ProductDetail />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/cart-redux" element={<CartRedux />} />
+                <Route path="/perfil" element={<Perfil />} />
+                <Route path="/mis-pedidos" element={<MisPedidos />} />
+                <Route path="/favoritos" element={<Favoritos />} />
+
+                <Route path="/admin" element={<AdminPlaceholder title="Dashboard" />} />
+                <Route path="/admin/productos" element={<AdminProductos />} />
+                <Route path="/admin/pedidos" element={<AdminPlaceholder title="Pedidos" />} />
+                <Route path="/admin/categorias" element={<AdminPlaceholder title="Categorías" />} />
+                <Route path="/admin/usuarios" element={<AdminPlaceholder title="Usuarios" />} />
+                <Route path="/admin/clientes" element={<AdminPlaceholder title="Clientes" />} />
+                <Route path="/admin/inventario" element={<AdminPlaceholder title="Inventario" />} />
+                <Route path="/admin/promociones" element={<AdminPlaceholder title="Promociones" />} />
+                <Route path="/admin/reportes" element={<AdminPlaceholder title="Reportes" />} />
+                <Route path="/admin/configuracion" element={<AdminPlaceholder title="Configuración" />} />
+            </Routes>
+        </>
+    );
+};
 
 function App() {
     return (
@@ -23,20 +60,7 @@ function App() {
             <PersistGate loading={null} persistor={persistor}>
                 <CartProvider>
                     <Router>
-                        <Navbar />
-                        <Routes>
-                            <Route path="/" element={<div style={{ padding: '4rem', textAlign: 'center' }}><h2>Vista Inicio (En construccion)</h2></div>} />
-                            <Route path="/productos" element={<Catalog />} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/register" element={<Register />} />
-                            <Route path="/producto/:id" element={<ProductDetail />} />
-                            <Route path="/cart" element={<Cart />} />
-                            <Route path="/checkout" element={<Checkout />} />
-                            <Route path="/cart-redux" element={<CartRedux />} />
-                            <Route path="/perfil" element={<Perfil />} />
-                            <Route path="/mis-pedidos" element={<MisPedidos />} />
-                            <Route path="/favoritos" element={<Favoritos />} />
-                        </Routes>
+                        <AppLayout />
                     </Router>
                 </CartProvider>
             </PersistGate>

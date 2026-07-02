@@ -28,4 +28,28 @@ export async function apiFetch(path, options = {}) {
   return contentType.includes('application/json') ? JSON.parse(text) : text;
 }
 
+export async function apiUpload(path, formData, options = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method: 'POST',
+    ...options,
+    headers: { ...authHeader(), ...options.headers },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const msg = await res.text().catch(() => 'Error al subir el archivo');
+    throw new Error(msg || `Error ${res.status}`);
+  }
+
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+export async function fetchImageBlobUrl(path) {
+  const res = await fetch(`${BASE_URL}${path}`, { headers: { ...authHeader() } });
+  if (!res.ok) throw new Error(`Error ${res.status}`);
+  const blob = await res.blob();
+  return URL.createObjectURL(blob);
+}
+
 export default BASE_URL;
