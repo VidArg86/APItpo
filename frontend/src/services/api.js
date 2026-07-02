@@ -52,4 +52,14 @@ export async function fetchImageBlobUrl(path) {
   return URL.createObjectURL(blob);
 }
 
+export function getRolesFromToken(token) {
+  if (!token) return [];
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return (payload.roles || '').split(',').filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
 export default BASE_URL;

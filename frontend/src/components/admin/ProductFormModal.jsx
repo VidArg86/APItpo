@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import ProductImage from './ProductImage';
 import { deleteImagenProducto } from '../../store/productsSlice';
 
-const emptyForm = { nombre: '', descripcion: '', precio: '', stock: '', categoriaIds: [] };
+const emptyForm = { nombre: '', descripcion: '', precio: '', stock: '', categoriaId: '' };
 
 const ProductFormModal = ({ producto, categorias, saving, onClose, onSubmit }) => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const ProductFormModal = ({ producto, categorias, saving, onClose, onSubmit }) =
         descripcion: producto.descripcion || '',
         precio: producto.precio ?? '',
         stock: producto.stock ?? '',
-        categoriaIds: (producto.categorias || []).map((c) => c.id),
+        categoriaId: producto.categorias?.[0]?.id ?? '',
       });
     } else {
       setForm(emptyForm);
@@ -31,15 +31,6 @@ const ProductFormModal = ({ producto, categorias, saving, onClose, onSubmit }) =
 
   const handleChange = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
-  };
-
-  const toggleCategoria = (id) => {
-    setForm((prev) => ({
-      ...prev,
-      categoriaIds: prev.categoriaIds.includes(id)
-        ? prev.categoriaIds.filter((c) => c !== id)
-        : [...prev.categoriaIds, id],
-    }));
   };
 
   const handleFiles = (files) => {
@@ -64,7 +55,7 @@ const ProductFormModal = ({ producto, categorias, saving, onClose, onSubmit }) =
       descripcion: form.descripcion,
       precio: Number(form.precio),
       stock: Number(form.stock),
-      categoriaIds: form.categoriaIds,
+      categoriaIds: form.categoriaId ? [Number(form.categoriaId)] : [],
       previousCategoriaIds: (producto?.categorias || []).map((c) => c.id),
       imagenes: nuevasImagenes,
     });
@@ -99,21 +90,15 @@ const ProductFormModal = ({ producto, categorias, saving, onClose, onSubmit }) =
             <textarea rows={4} value={form.descripcion} onChange={handleChange('descripcion')} />
           </label>
 
-          <div>
-            <p className="admin-form-label">Categorías</p>
-            <div className="admin-chip-group">
+          <label>
+            Categoría
+            <select value={form.categoriaId} onChange={handleChange('categoriaId')} required>
+              <option value="" disabled>Seleccioná una categoría</option>
               {categorias.map((cat) => (
-                <button
-                  type="button"
-                  key={cat.id}
-                  className={`admin-chip${form.categoriaIds.includes(cat.id) ? ' active' : ''}`}
-                  onClick={() => toggleCategoria(cat.id)}
-                >
-                  {cat.nombre}
-                </button>
+                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
               ))}
-            </div>
-          </div>
+            </select>
+          </label>
 
           <div>
             <p className="admin-form-label">Fotos del producto</p>

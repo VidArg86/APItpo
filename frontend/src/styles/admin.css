@@ -442,7 +442,8 @@
 }
 
 .admin-form input,
-.admin-form textarea {
+.admin-form textarea,
+.admin-form select {
   font-family: inherit;
   font-weight: 400;
   padding: 0.65rem 0.85rem;
@@ -454,7 +455,8 @@
 }
 
 .admin-form input:focus,
-.admin-form textarea:focus {
+.admin-form textarea:focus,
+.admin-form select:focus {
   outline: none;
   border-color: var(--color-rosa);
 }
