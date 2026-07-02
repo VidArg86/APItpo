@@ -45,11 +45,8 @@ export async function apiUpload(path, formData, options = {}) {
   return text ? JSON.parse(text) : null;
 }
 
-export async function fetchImageBlobUrl(path) {
-  const res = await fetch(`${BASE_URL}${path}`, { headers: { ...authHeader() } });
-  if (!res.ok) throw new Error(`Error ${res.status}`);
-  const blob = await res.blob();
-  return URL.createObjectURL(blob);
+export function getImagenUrl(productoId, imagenId) {
+  return `${BASE_URL}/productos/${productoId}/imagenes/${imagenId}`;
 }
 
 export function getRolesFromToken(token) {
