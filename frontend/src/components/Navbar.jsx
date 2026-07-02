@@ -11,6 +11,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const isAdmin = useSelector((state) => state.auth.roles?.includes('ROLE_ADMIN'));
   const [menuAbierto, setMenuAbierto] = useState(false);
   const menuRef = useRef(null);
 
@@ -93,6 +94,11 @@ const Navbar = () => {
                 <Link to="/favoritos" className="dropdown-item" onClick={() => setMenuAbierto(false)}>
                   Mis favoritos
                 </Link>
+                {isAdmin && (
+                  <Link to="/admin" className="dropdown-item" onClick={() => setMenuAbierto(false)}>
+                    Admin
+                  </Link>
+                )}
                 <button className="dropdown-item dropdown-logout" onClick={handleLogout}>
                   Cerrar sesion
                 </button>
