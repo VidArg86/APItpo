@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
+import { apiFetch } from '../services/api';
+import { normalizar, iconosPorCategoria, iconTodos, ordenarCategorias } from '../utils/categoriaIcons';
 import superiorBanner from '../assets/InicioBannerSuperior.png';
 import inferiorBanner from '../assets/InicioBannerInferior.png';
-import iconTodos from '../assets/todos.svg';
-import iconPanificados from '../assets/panificados.svg';
-import iconTortas from '../assets/tortas.svg';
-import iconCafes from '../assets/cafes.svg';
-import iconBebidas from '../assets/bebidas.svg';
-import iconCombos from '../assets/combos.svg';
-import iconPromos from '../assets/promos.svg';
 import enviosIcon from '../assets/envios.png';
 import productosIcon from '../assets/productoss.png';
 import pedidosIcon from '../assets/pedidoss.png';
@@ -19,19 +14,19 @@ import '../styles/home.css';
 const Home = () => {
   const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [categoriaId, setCategoriaId] = useState('');
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    const fetchProductos = async () => {
+    const cargarDatos = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:8080/api/productos', {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setProductos(data);
-        }
+        const [productosData, categoriasData] = await Promise.all([
+          apiFetch('/productos'),
+          apiFetch('/categorias'),
+        ]);
+        setProductos(productosData || []);
+        setCategorias(ordenarCategorias(categoriasData || []));
       } catch (error) {
         console.error('Error fetching productos:', error);
       } finally {
@@ -39,10 +34,15 @@ const Home = () => {
       }
     };
 
-    fetchProductos();
+    cargarDatos();
   }, []);
 
-  const featured = productos.slice(0, 6);
+  const productosFiltrados = useMemo(() => {
+    if (!categoriaId) return productos;
+    return productos.filter((p) => (p.categorias || []).some((c) => String(c.id) === categoriaId));
+  }, [productos, categoriaId]);
+
+  const featured = productosFiltrados.slice(0, 6);
 
   return (
     <div className="home-page-container">
@@ -61,27 +61,23 @@ const Home = () => {
       </section>
 
       <section className="home-categories">
-        <button className="pill active" type="button">
+        <button
+          className={`pill${categoriaId === '' ? ' active' : ''}`}
+          type="button"
+          onClick={() => setCategoriaId('')}
+        >
           <img src={iconTodos} alt="Todos" /> Todos
         </button>
-        <button className="pill" type="button">
-          <img src={iconPanificados} alt="Panificados" /> Panificados
-        </button>
-        <button className="pill" type="button">
-          <img src={iconTortas} alt="Tortas" /> Tortas
-        </button>
-        <button className="pill" type="button">
-          <img src={iconCafes} alt="Cafés" /> Cafés
-        </button>
-        <button className="pill" type="button">
-          <img src={iconBebidas} alt="Bebidas" /> Bebidas
-        </button>
-        <button className="pill" type="button">
-          <img src={iconCombos} alt="Combos" /> Combos
-        </button>
-        <button className="pill" type="button">
-          <img src={iconPromos} alt="Promos" /> Promos
-        </button>
+        {categorias.map((cat) => (
+          <button
+            key={cat.id}
+            className={`pill${categoriaId === String(cat.id) ? ' active' : ''}`}
+            type="button"
+            onClick={() => setCategoriaId(String(cat.id))}
+          >
+            <img src={iconosPorCategoria[normalizar(cat.nombre)] || iconTodos} alt={cat.nombre} /> {cat.nombre}
+          </button>
+        ))}
       </section>
 
       <section className="home-featured-section">

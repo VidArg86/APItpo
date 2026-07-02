@@ -5,31 +5,13 @@ import ProductCard from '../components/ProductCard';
 import { apiFetch } from '../services/api';
 
 import bannerImage from '../assets/bannerCatProduct.png';
-import iconTodos from '../assets/todos.svg';
-import iconPanificados from '../assets/panificados.svg';
-import iconTortas from '../assets/tortas.svg';
-import iconCafes from '../assets/cafes.svg';
-import iconBebidas from '../assets/bebidas.svg';
-import iconCombos from '../assets/combos.svg';
-import iconPromos from '../assets/promos.svg';
-
 import enviosIcon from '../assets/envios.png';
 import productosIcon from '../assets/productoss.png';
 import pedidosIcon from '../assets/pedidoss.png';
 import retiroIcon from '../assets/retiro.png';
+import { normalizar, iconosPorCategoria, iconTodos, ordenarCategorias } from '../utils/categoriaIcons';
 
 import '../styles/catalog.css';
-
-const ICONOS_POR_CATEGORIA = {
-  panificados: iconPanificados,
-  tortas: iconTortas,
-  cafes: iconCafes,
-  bebidas: iconBebidas,
-  combos: iconCombos,
-  promos: iconPromos,
-};
-
-const normalizar = (str) => str?.toLowerCase().normalize('NFD').replace(new RegExp('[̀-ͯ]', 'g'), '') || '';
 
 const initialFiltros = {
   categoriaId: '',
@@ -60,7 +42,7 @@ const Catalog = () => {
           apiFetch('/categorias'),
         ]);
         setProductos(productosData || []);
-        setCategorias(categoriasData || []);
+        setCategorias(ordenarCategorias(categoriasData || []));
       } catch (error) {
         console.error('Error fetching catálogo:', error);
       } finally {
@@ -131,7 +113,7 @@ const Catalog = () => {
             className={`pill${filtros.categoriaId === String(cat.id) ? ' active' : ''}`}
             onClick={() => setFiltros((f) => ({ ...f, categoriaId: String(cat.id) }))}
           >
-            <img src={ICONOS_POR_CATEGORIA[normalizar(cat.nombre)] || iconTodos} alt={cat.nombre} /> {cat.nombre}
+            <img src={iconosPorCategoria[normalizar(cat.nombre)] || iconTodos} alt={cat.nombre} /> {cat.nombre}
           </button>
         ))}
       </div>
